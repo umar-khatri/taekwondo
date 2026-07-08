@@ -1,4 +1,4 @@
-import { Shield } from "lucide-react";
+import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { ACADEMY_INFO } from "@/lib/types";
 
@@ -9,8 +9,8 @@ export function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           {/* Brand */}
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Shield className="h-4 w-4" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 overflow-hidden">
+              <Image src="/logo.png" alt="Logo" width={32} height={32} className="object-cover" />
             </div>
             <span className="font-bold text-sm">{ACADEMY_INFO.name}</span>
           </div>

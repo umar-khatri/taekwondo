@@ -66,8 +66,8 @@ export const ACADEMY_INFO = {
     days: "Monday, Wednesday, Friday",
     time: "9:30 AM – 10:30 AM",
   },
-  address: "42 Martial Arts Street, Al Rashidiya, Dubai, UAE",
+  address: "Jaffrey Sports Club, J B Shah Marg, Masjid Bunder, Mumbai - 400009 (Chinch Bunder Playground, Dongri)",
   phone: "+971 50 123 4567",
   email: "info@masterfarooqs.club",
-  mapQuery: "Al+Rashidiya+Dubai+UAE",
+  mapQuery: "Jaffrey Sports Club, J B Shah Marg, Masjid Bunder, Mumbai",
 };

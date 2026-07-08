@@ -78,8 +78,8 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
-            <Link href="/dashboard" className="block w-full mt-3" onClick={() => setOpen(false)}>
-              <Button className="w-full cursor-pointer h-11 text-base font-medium">
+            <Link href="/dashboard" onClick={() => setOpen(false)}>
+              <Button size="sm" className="w-full mt-2 cursor-pointer">
                 Dashboard
               </Button>
             </Link>

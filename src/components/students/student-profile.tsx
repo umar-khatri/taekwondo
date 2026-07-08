@@ -5,7 +5,7 @@ import { Edit, Phone, Calendar, AlertTriangle, FileText, Activity } from "lucide
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Student, BELT_COLORS, Belt, AttendanceRecord } from "@/lib/types";
+import { Student, AttendanceRecord } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import { format } from "date-fns";
 
@@ -18,8 +18,6 @@ interface StudentProfileProps {
 export function StudentProfile({ student, onEdit, onClose }: StudentProfileProps) {
   const [attendance, setAttendance] = useState<AttendanceRecord[]>([]);
   const [loadingAttendance, setLoadingAttendance] = useState(true);
-
-  const belt = BELT_COLORS[student.belt as Belt];
 
   useEffect(() => {
     async function loadAttendance() {
@@ -43,17 +41,12 @@ export function StudentProfile({ student, onEdit, onClose }: StudentProfileProps
     <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <div
-          className={`flex h-14 w-14 items-center justify-center rounded-2xl text-lg font-bold ${belt.bg} ${belt.text}`}
-        >
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl text-lg font-bold bg-primary/10 text-primary">
           {student.name.charAt(0).toUpperCase()}
         </div>
         <div>
           <h3 className="text-lg font-bold">{student.name}</h3>
           <div className="flex items-center gap-2">
-            <Badge className={`text-xs ${belt.bg} ${belt.text} border-0`}>
-              {belt.label} Belt
-            </Badge>
             <Badge variant={student.is_active ? "default" : "secondary"} className="text-xs">
               {student.is_active ? "Active" : "Inactive"}
             </Badge>

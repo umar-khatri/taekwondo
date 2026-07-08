@@ -36,7 +36,6 @@ import { toast } from "sonner";
 interface ReportRow {
   studentName: string;
   phone: string;
-  belt: string;
   totalClasses: number;
   present: number;
   absent: number;
@@ -84,7 +83,6 @@ export default function ReportsPage() {
       return {
         studentName: student.name,
         phone: student.phone,
-        belt: student.belt,
         totalClasses: total,
         present,
         absent,
@@ -117,11 +115,10 @@ export default function ReportsPage() {
 
     autoTable(doc, {
       startY: 42,
-      head: [["Student", "Phone", "Belt", "Classes", "Present", "Absent", "Rate"]],
+      head: [["Student", "Phone", "Classes", "Present", "Absent", "Rate"]],
       body: reportData.map((row) => [
         row.studentName,
         row.phone,
-        row.belt.charAt(0).toUpperCase() + row.belt.slice(1),
         row.totalClasses.toString(),
         row.present.toString(),
         row.absent.toString(),
@@ -139,11 +136,10 @@ export default function ReportsPage() {
     const XLSX = await import("xlsx");
 
     const wsData = [
-      ["Student", "Phone", "Belt", "Total Classes", "Present", "Absent", "Rate"],
+      ["Student", "Phone", "Total Classes", "Present", "Absent", "Rate"],
       ...reportData.map((row) => [
         row.studentName,
         row.phone,
-        row.belt.charAt(0).toUpperCase() + row.belt.slice(1),
         row.totalClasses,
         row.present,
         row.absent,
@@ -159,7 +155,6 @@ export default function ReportsPage() {
     ws["!cols"] = [
       { wch: 20 },
       { wch: 15 },
-      { wch: 10 },
       { wch: 12 },
       { wch: 10 },
       { wch: 10 },
@@ -267,7 +262,6 @@ export default function ReportsPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Student</TableHead>
-                  <TableHead className="hidden sm:table-cell">Belt</TableHead>
                   <TableHead className="text-center">Classes</TableHead>
                   <TableHead className="text-center">Present</TableHead>
                   <TableHead className="text-center">Absent</TableHead>
@@ -280,15 +274,7 @@ export default function ReportsPage() {
                     <TableCell>
                       <div>
                         <p className="font-medium text-sm">{row.studentName}</p>
-                        <p className="text-xs text-muted-foreground sm:hidden">
-                          {row.belt.charAt(0).toUpperCase() + row.belt.slice(1)} Belt
-                        </p>
                       </div>
-                    </TableCell>
-                    <TableCell className="hidden sm:table-cell">
-                      <Badge variant="secondary" className="text-xs">
-                        {row.belt.charAt(0).toUpperCase() + row.belt.slice(1)}
-                      </Badge>
                     </TableCell>
                     <TableCell className="text-center">{row.totalClasses}</TableCell>
                     <TableCell className="text-center text-green-600 dark:text-green-400">

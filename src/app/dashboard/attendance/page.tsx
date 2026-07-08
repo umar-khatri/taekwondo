@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/lib/supabase";
-import { Student, AttendanceRecord, BELT_COLORS, Belt } from "@/lib/types";
+import { Student, AttendanceRecord } from "@/lib/types";
 import { format, addDays, subDays, isToday } from "date-fns";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -212,7 +212,6 @@ export default function AttendancePage() {
         <div className="space-y-1.5">
           {students.map((student) => {
             const status = attendance[student.id];
-            const belt = BELT_COLORS[student.belt as Belt];
 
             return (
               <Card
@@ -228,9 +227,7 @@ export default function AttendancePage() {
                 <CardContent className="pt-3 pb-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div
-                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold ${belt.bg} ${belt.text}`}
-                      >
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold bg-primary/10 text-primary">
                         {student.name.charAt(0).toUpperCase()}
                       </div>
                       <div>

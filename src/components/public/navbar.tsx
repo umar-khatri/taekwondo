@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { Menu, X, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,8 +25,8 @@ export function Navbar() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 font-bold text-lg tracking-tight">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Shield className="h-5 w-5" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 overflow-hidden">
+            <Image src="/logo.png" alt="Logo" width={32} height={32} className="object-cover" />
           </div>
           <span className="hidden sm:inline">{ACADEMY_INFO.name}</span>
         </Link>

@@ -29,7 +29,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { supabase } from "@/lib/supabase";
-import { Student, BELT_COLORS, Belt } from "@/lib/types";
+import { Student } from "@/lib/types";
 import { StudentForm } from "@/components/students/student-form";
 import { StudentProfile } from "@/components/students/student-profile";
 import { format } from "date-fns";
@@ -150,7 +150,6 @@ function StudentsPageContent() {
       ) : (
         <div className="space-y-2">
           {filtered.map((student) => {
-            const belt = BELT_COLORS[student.belt as Belt];
             return (
               <Card
                 key={student.id}
@@ -160,10 +159,8 @@ function StudentsPageContent() {
                 <CardContent className="pt-4 pb-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3 min-w-0">
-                      {/* Belt indicator */}
-                      <div
-                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold ${belt.bg} ${belt.text}`}
-                      >
+                      {/* Avatar */}
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold bg-primary/10 text-primary">
                         {student.name.charAt(0).toUpperCase()}
                       </div>
                       <div className="min-w-0">
@@ -177,10 +174,6 @@ function StudentsPageContent() {
                         </div>
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <span>{student.phone}</span>
-                          <span>·</span>
-                          <Badge className={`text-[10px] px-1.5 py-0 ${belt.bg} ${belt.text} border-0`}>
-                            {belt.label} Belt
-                          </Badge>
                         </div>
                       </div>
                     </div>

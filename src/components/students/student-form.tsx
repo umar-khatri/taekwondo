@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/lib/supabase";
-import { Student, Belt, BELT_COLORS } from "@/lib/types";
+import { Student } from "@/lib/types";
 import { toast } from "sonner";
 
 interface StudentFormProps {
@@ -30,7 +30,6 @@ interface StudentFormProps {
 export function StudentForm({ student, onSuccess, onCancel, defaultValues }: StudentFormProps) {
   const [name, setName] = useState(student?.name ?? defaultValues?.name ?? "");
   const [phone, setPhone] = useState(student?.phone ?? defaultValues?.phone ?? "");
-  const [belt, setBelt] = useState<Belt>((student?.belt as Belt) ?? "white");
   const [dateJoined, setDateJoined] = useState(
     student?.date_joined ?? new Date().toISOString().split("T")[0]
   );
@@ -51,7 +50,6 @@ export function StudentForm({ student, onSuccess, onCancel, defaultValues }: Stu
     const payload = {
       name: name.trim(),
       phone: phone.trim(),
-      belt,
       date_joined: dateJoined,
       emergency_contact: emergencyContact.trim(),
       notes: notes.trim(),
@@ -104,32 +102,14 @@ export function StudentForm({ student, onSuccess, onCancel, defaultValues }: Stu
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label>Belt</Label>
-          <Select value={belt} onValueChange={(val) => setBelt(val as Belt)}>
-            <SelectTrigger className="cursor-pointer">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {(Object.keys(BELT_COLORS) as Belt[]).map((b) => (
-                <SelectItem key={b} value={b} className="cursor-pointer">
-                  {BELT_COLORS[b].label} Belt
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="student-date">Date Joined</Label>
-          <Input
-            id="student-date"
-            type="date"
-            value={dateJoined}
-            onChange={(e) => setDateJoined(e.target.value)}
-          />
-        </div>
+      <div className="space-y-2">
+        <Label htmlFor="student-date">Date Joined</Label>
+        <Input
+          id="student-date"
+          type="date"
+          value={dateJoined}
+          onChange={(e) => setDateJoined(e.target.value)}
+        />
       </div>
 
       <div className="space-y-2">

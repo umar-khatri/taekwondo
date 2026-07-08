@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -32,8 +33,8 @@ export function Sidebar() {
     <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-border/50 bg-card/50">
       {/* Logo */}
       <div className="flex h-16 items-center gap-2.5 px-5 border-b border-border/50">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-          <Shield className="h-4 w-4" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 overflow-hidden">
+          <Image src="/logo.png" alt="Logo" width={32} height={32} className="object-cover" />
         </div>
         <span className="font-bold text-sm tracking-tight">{ACADEMY_INFO.name}</span>
       </div>

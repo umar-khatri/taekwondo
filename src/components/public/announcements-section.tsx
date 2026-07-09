@@ -1,15 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Megaphone, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/lib/supabase";
 import { Announcement } from "@/lib/types";
 import { format } from "date-fns";
+import { useScrollReveal, useScrollStagger } from "@/lib/animations";
 
 export function AnnouncementsSection() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [loading, setLoading] = useState(true);
+  const headingRef = useScrollReveal<HTMLDivElement>({ y: 30, duration: 0.7 });
+  const cardsRef = useScrollStagger<HTMLDivElement>("[data-announcement]", {
+    y: 30,
+    stagger: 0.12,
+    duration: 0.5,
+  });
 
   useEffect(() => {
     async function load() {
@@ -27,7 +34,7 @@ export function AnnouncementsSection() {
   return (
     <section id="announcements" className="py-16 sm:py-24 bg-muted/30">
       <div className="mx-auto max-w-6xl px-4">
-        <div className="text-center mb-12">
+        <div ref={headingRef} className="text-center mb-12">
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
             Latest News
           </p>
@@ -59,9 +66,9 @@ export function AnnouncementsSection() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
             {announcements.map((item) => (
-              <Card key={item.id} className="border-border/50 bg-card/80 card-hover">
+              <Card key={item.id} data-announcement className="border-border/50 bg-card/80 card-hover transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
                     <Calendar className="h-3.5 w-3.5" />

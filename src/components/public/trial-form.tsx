@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import { useScrollReveal } from "@/lib/animations";
 
 export function TrialForm() {
   const [name, setName] = useState("");
@@ -15,6 +16,13 @@ export function TrialForm() {
   const [age, setAge] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const headingRef = useScrollReveal<HTMLDivElement>({ y: 30, duration: 0.7 });
+  const formRef = useScrollReveal<HTMLDivElement>({
+    y: 40,
+    scale: 0.97,
+    duration: 0.7,
+    delay: 0.15,
+  });
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -76,7 +84,7 @@ export function TrialForm() {
   return (
     <section id="trial" className="py-16 sm:py-24">
       <div className="mx-auto max-w-6xl px-4">
-        <div className="text-center mb-12">
+        <div ref={headingRef} className="text-center mb-12">
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
             Get Started
           </p>
@@ -88,7 +96,8 @@ export function TrialForm() {
           </p>
         </div>
 
-        <Card className="max-w-md mx-auto border-border/50 bg-card/80 card-hover">
+        <div ref={formRef}>
+        <Card className="max-w-md mx-auto border-border/50 bg-card/80 card-hover transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
           <CardContent className="pt-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -149,6 +158,7 @@ export function TrialForm() {
             </form>
           </CardContent>
         </Card>
+        </div>
       </div>
     </section>
   );

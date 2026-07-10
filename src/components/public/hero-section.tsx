@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import { Shield, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ACADEMY_INFO } from "@/lib/types";
@@ -14,7 +13,6 @@ if (typeof window !== "undefined") {
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -30,31 +28,6 @@ export function HeroSection() {
     if (prefersReduced) return;
 
     const ctx = gsap.context(() => {
-      // Ken Burns - slow zoom on background image
-      gsap.fromTo(
-        bgRef.current,
-        { scale: 1 },
-        {
-          scale: 1.15,
-          duration: 25,
-          ease: "none",
-          repeat: -1,
-          yoyo: true,
-        }
-      );
-
-      // Parallax on scroll
-      gsap.to(bgRef.current, {
-        yPercent: 30,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 0.5,
-        },
-      });
-
       // Hero content entrance animations
       const tl = gsap.timeline({ delay: 0.2 });
 
@@ -120,7 +93,7 @@ export function HeroSection() {
           gsap.to(particle, {
             y: `+=${gsap.utils.random(-60, -20)}`,
             x: `+=${gsap.utils.random(-30, 30)}`,
-            opacity: gsap.utils.random(0.15, 0.5),
+            opacity: gsap.utils.random(0.15, 0.45),
             duration: gsap.utils.random(4, 8),
             ease: "sine.inOut",
             repeat: -1,
@@ -137,40 +110,41 @@ export function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden min-h-screen flex items-center"
+      className="relative min-h-screen flex items-center overflow-hidden"
     >
-      {/* Full-screen background image with Ken Burns */}
-      <div ref={bgRef} className="absolute inset-0 -inset-x-4 -inset-y-8">
-        <Image
-          src="/hero-dojo.jpg"
-          alt="Taekwondo Dojo"
-          fill
-          className="object-cover"
-          priority
-          quality={85}
-        />
-      </div>
-
-      {/* Dark gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/30" />
-
-      {/* Subtle vignette */}
+      {/* Fixed background — dark gradient with red/navy/gold tones */}
       <div
-        className="absolute inset-0"
+        className="fixed inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%)",
+            "radial-gradient(ellipse at 20% 30%, #2a0e0e 0%, #0c0c1e 35%, #060612 65%, #030308 100%)",
         }}
       />
 
-      {/* Animated ambient glow */}
-      <div className="absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-red-600/10 blur-[100px] animate-pulse" />
-      <div className="absolute bottom-1/3 right-1/4 h-48 w-48 rounded-full bg-blue-700/8 blur-[80px] animate-pulse" style={{ animationDelay: "2s" }} />
+      {/* Animated ambient glow orbs */}
+      <div className="fixed top-[15%] left-[10%] h-80 w-80 rounded-full bg-red-900/15 blur-[120px] animate-pulse -z-10" />
+      <div
+        className="fixed top-[40%] right-[10%] h-64 w-64 rounded-full bg-blue-900/10 blur-[100px] animate-pulse -z-10"
+        style={{ animationDelay: "2s", animationDuration: "4s" }}
+      />
+      <div
+        className="fixed bottom-[20%] left-[30%] h-56 w-56 rounded-full bg-amber-800/8 blur-[90px] animate-pulse -z-10"
+        style={{ animationDelay: "3.5s", animationDuration: "5s" }}
+      />
+
+      {/* Subtle grid pattern */}
+      <div
+        className="fixed inset-0 opacity-[0.02] -z-10"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
 
       {/* Floating particles */}
       <div ref={particlesRef} className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 20 }).map((_, i) => (
+        {Array.from({ length: 16 }).map((_, i) => (
           <div
             key={i}
             className="absolute rounded-full opacity-0"
@@ -179,14 +153,14 @@ export function HeroSection() {
               height: `${2 + Math.random() * 3}px`,
               background:
                 i % 4 === 0
-                  ? "rgba(220,60,60,0.6)"
+                  ? "rgba(220,60,60,0.5)"
                   : i % 4 === 1
-                  ? "rgba(60,100,180,0.5)"
+                  ? "rgba(60,80,180,0.4)"
                   : i % 4 === 2
-                  ? "rgba(240,200,80,0.5)"
-                  : "rgba(255,255,255,0.3)",
-              left: `${10 + Math.random() * 80}%`,
-              top: `${10 + Math.random() * 80}%`,
+                  ? "rgba(230,190,70,0.45)"
+                  : "rgba(255,255,255,0.25)",
+              left: `${8 + Math.random() * 84}%`,
+              top: `${8 + Math.random() * 84}%`,
             }}
           />
         ))}
@@ -198,7 +172,7 @@ export function HeroSection() {
           {/* Badge */}
           <div
             ref={badgeRef}
-            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 backdrop-blur-md px-4 py-1.5 text-xs font-medium text-white/80 shadow-lg opacity-0"
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md px-4 py-1.5 text-xs font-medium text-white/70 shadow-lg opacity-0"
           >
             <Shield className="h-3.5 w-3.5 text-red-400" />
             Taekwondo · Kickboxing · MMA
@@ -209,15 +183,13 @@ export function HeroSection() {
             ref={titleRef}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white opacity-0"
           >
-            <span className="bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent">
-              {ACADEMY_INFO.name}
-            </span>
+            {ACADEMY_INFO.name}
           </h1>
 
           {/* Subtitle */}
           <p
             ref={subtitleRef}
-            className="text-lg sm:text-xl md:text-2xl font-medium text-white/70 max-w-2xl opacity-0"
+            className="text-lg sm:text-xl md:text-2xl font-medium text-white/60 max-w-2xl opacity-0"
           >
             {ACADEMY_INFO.tagline}
           </p>
@@ -225,7 +197,7 @@ export function HeroSection() {
           {/* Description */}
           <p
             ref={descRef}
-            className="text-sm sm:text-base text-white/50 max-w-xl opacity-0"
+            className="text-sm sm:text-base text-white/40 max-w-xl opacity-0"
           >
             Train with the best. Build confidence, discipline, and strength
             through the art of martial arts.
@@ -236,7 +208,7 @@ export function HeroSection() {
             <a href="#trial">
               <Button
                 size="lg"
-                className="gap-2 text-base px-8 cursor-pointer bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white border-0 shadow-lg shadow-red-900/30 transition-all duration-300 hover:shadow-red-800/40 hover:scale-[1.02] active:scale-[0.98]"
+                className="gap-2 text-base px-8 cursor-pointer bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white border-0 shadow-lg shadow-red-900/30 transition-all duration-300 hover:shadow-red-700/40 hover:scale-[1.02] active:scale-[0.98]"
               >
                 Book a Free Trial
                 <ArrowRight className="h-4 w-4" />
@@ -246,7 +218,7 @@ export function HeroSection() {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-base px-8 cursor-pointer border-white/20 text-white hover:bg-white/10 backdrop-blur-sm transition-all duration-300 hover:border-white/30 hover:scale-[1.02] active:scale-[0.98]"
+                className="text-base px-8 cursor-pointer border-white/15 text-white hover:bg-white/10 backdrop-blur-sm transition-all duration-300 hover:border-white/25 hover:scale-[1.02] active:scale-[0.98]"
               >
                 View Schedule
               </Button>
@@ -267,7 +239,7 @@ export function HeroSection() {
                 <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-red-400 to-amber-400 bg-clip-text text-transparent">
                   {stat.value}
                 </div>
-                <div className="text-xs sm:text-sm text-white/40 mt-1">
+                <div className="text-xs sm:text-sm text-white/35 mt-1">
                   {stat.label}
                 </div>
               </div>
@@ -275,9 +247,6 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-
-      {/* Bottom fade to page background */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
     </section>
   );
 }

@@ -27,15 +27,20 @@ export default function HomePage() {
       >
         <Navbar />
         <main className="flex-1">
+          {/* Hero sits over the fixed background */}
           <HeroSection />
-          <AboutSection />
-          <ScheduleSection />
-          <InstructorSection />
-          <LocationSection />
-          <AnnouncementsSection />
-          <TrialForm />
+
+          {/* All remaining sections scroll over the fixed background with an opaque wrapper */}
+          <div className="relative z-10 bg-background">
+            <AboutSection />
+            <ScheduleSection />
+            <InstructorSection />
+            <LocationSection />
+            <AnnouncementsSection />
+            <TrialForm />
+            <Footer />
+          </div>
         </main>
-        <Footer />
       </div>
     </>
   );

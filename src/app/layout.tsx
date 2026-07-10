@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -20,6 +20,13 @@ export const metadata: Metadata = {
   description:
     "Premier Taekwondo academy offering expert instruction for all ages and skill levels. Build discipline, respect, and excellence through martial arts.",
   keywords: ["taekwondo", "martial arts", "karate", "self defense", "fitness"],
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

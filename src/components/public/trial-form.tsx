@@ -51,7 +51,7 @@ export function TrialForm() {
 
   if (submitted) {
     return (
-      <section id="trial" className="py-16 sm:py-24 bg-background/60 backdrop-blur-sm relative z-10 border-t border-border/20">
+      <section id="trial" className="py-16 sm:py-24 relative z-10">
         <div className="mx-auto max-w-6xl px-4">
           <Card className="max-w-md mx-auto border-border/50 bg-card/80">
             <CardContent className="pt-8 pb-8 text-center">
@@ -82,7 +82,7 @@ export function TrialForm() {
   }
 
   return (
-    <section id="trial" className="py-16 sm:py-24 bg-background/60 backdrop-blur-sm relative z-10 border-t border-border/20">
+    <section id="trial" className="py-16 sm:py-24 relative z-10">
       <div className="mx-auto max-w-6xl px-4">
         <div ref={headingRef} className="text-center mb-12">
           <p className="text-sm font-semibold text-amber-500 uppercase tracking-wider mb-2">

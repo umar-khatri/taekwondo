@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { ACADEMY_INFO } from "@/lib/types";
 import gsap from "gsap";
 
@@ -100,7 +99,6 @@ export function Navbar() {
 
         {/* Right side */}
         <div className="flex items-center gap-2">
-          <ThemeToggle />
           <Link href="/dashboard" className="hidden md:block">
             <Button
               size="sm"

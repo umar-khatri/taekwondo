@@ -32,7 +32,7 @@ export function AnnouncementsSection() {
   }, []);
 
   return (
-    <section id="announcements" className="py-16 sm:py-24 bg-background/60 backdrop-blur-sm relative z-10 border-t border-border/20">
+    <section id="announcements" className="py-16 sm:py-24 relative z-10">
       <div className="mx-auto max-w-6xl px-4">
         <div ref={headingRef} className="text-center mb-12">
           <p className="text-sm font-semibold bg-gradient-to-r from-red-500 to-amber-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">

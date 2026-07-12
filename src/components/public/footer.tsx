@@ -4,7 +4,7 @@ import { ACADEMY_INFO } from "@/lib/types";
 
 export function Footer() {
   return (
-    <footer className="bg-background/80 backdrop-blur-md relative z-10 border-t border-border/20 py-12">
+    <footer className="relative z-10 py-12">
       <div className="mx-auto max-w-6xl px-4 py-10">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           {/* Brand */}

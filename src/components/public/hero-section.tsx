@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Shield, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ACADEMY_INFO } from "@/lib/types";
@@ -20,6 +20,11 @@ export function HeroSection() {
   const ctaRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia(
@@ -144,7 +149,7 @@ export function HeroSection() {
 
       {/* Floating particles */}
       <div ref={particlesRef} className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 16 }).map((_, i) => (
+        {mounted && Array.from({ length: 16 }).map((_, i) => (
           <div
             key={i}
             className="absolute rounded-full opacity-0"

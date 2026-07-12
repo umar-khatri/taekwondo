@@ -75,3 +75,21 @@ create policy "Allow all access to students" on students for all using (true) wi
 create policy "Allow all access to attendance" on attendance for all using (true) with check (true);
 create policy "Allow all access to trial_requests" on trial_requests for all using (true) with check (true);
 create policy "Allow all access to announcements" on announcements for all using (true) with check (true);
+
+-- ============================================
+-- FEE PAYMENTS TABLE
+-- ============================================
+create table if not exists fee_payments (
+  id uuid primary key default uuid_generate_v4(),
+  student_id uuid not null references students(id) on delete cascade,
+  month text not null, -- Format: 'YYYY-MM'
+  paid_date date not null default current_date,
+  created_at timestamptz not null default now(),
+  unique(student_id, month)
+);
+
+create index if not exists idx_fee_payments_student_id on fee_payments(student_id);
+create index if not exists idx_fee_payments_month on fee_payments(month);
+
+alter table fee_payments enable row level security;
+create policy "Allow all access to fee_payments" on fee_payments for all using (true) with check (true);

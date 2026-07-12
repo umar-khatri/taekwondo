@@ -139,7 +139,7 @@ export function TrialForm() {
 
               <Button
                 type="submit"
-                className="w-full gap-2 cursor-pointer bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-400 hover:to-amber-400 text-white border-0 shadow-lg shadow-amber-900/20"
+                className="w-full gap-2 cursor-pointer"
                 size="lg"
                 disabled={loading}
               >

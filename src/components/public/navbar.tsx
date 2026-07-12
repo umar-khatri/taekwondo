@@ -63,7 +63,7 @@ export function Navbar() {
           href="/"
           className="flex items-center gap-2.5 font-bold text-lg tracking-tight group"
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-full overflow-hidden transition-transform duration-300 group-hover:scale-110 ring-1 ring-white/10">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full overflow-hidden transition-transform duration-300 group-hover:scale-110 ring-1 ring-border">
             <Image
               src="/logo.png"
               alt="Logo"
@@ -74,7 +74,7 @@ export function Navbar() {
           </div>
           <span
             className={`hidden sm:inline transition-colors duration-300 ${
-              scrolled ? "" : "text-white"
+              scrolled ? "" : "text-foreground"
             }`}
           >
             {ACADEMY_INFO.name}
@@ -90,7 +90,7 @@ export function Navbar() {
               className={`px-3 py-2 text-sm font-medium transition-all duration-300 rounded-md ${
                 scrolled
                   ? "text-muted-foreground hover:text-foreground hover:bg-accent"
-                  : "text-white/70 hover:text-white hover:bg-white/10"
+                  : "text-foreground/70 hover:text-foreground hover:bg-accent/50"
               }`}
             >
               {link.label}
@@ -108,7 +108,7 @@ export function Navbar() {
               className={`cursor-pointer transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] ${
                 scrolled
                   ? ""
-                  : "border-white/20 text-white hover:bg-white/10"
+                  : "border-border/50 text-foreground hover:bg-accent/50"
               }`}
             >
               Dashboard
@@ -119,7 +119,7 @@ export function Navbar() {
             variant="ghost"
             size="icon"
             className={`md:hidden h-9 w-9 cursor-pointer ${
-              scrolled ? "" : "text-white hover:bg-white/10"
+              scrolled ? "" : "text-foreground hover:bg-accent/50"
             }`}
             onClick={() => setOpen(!open)}
           >
@@ -134,7 +134,7 @@ export function Navbar() {
           className={`md:hidden border-t animate-fade-in ${
             scrolled
               ? "border-border/50 bg-background"
-              : "border-white/10 bg-black/80 backdrop-blur-xl"
+              : "border-border/30 bg-background/90 backdrop-blur-xl"
           }`}
         >
           <nav className="flex flex-col px-4 py-3 gap-1">
@@ -145,7 +145,7 @@ export function Navbar() {
                 className={`px-3 py-2.5 text-sm font-medium transition-colors rounded-md ${
                   scrolled
                     ? "text-muted-foreground hover:text-foreground hover:bg-accent"
-                    : "text-white/70 hover:text-white hover:bg-white/10"
+                    : "text-foreground/70 hover:text-foreground hover:bg-accent/50"
                 }`}
                 onClick={() => setOpen(false)}
               >

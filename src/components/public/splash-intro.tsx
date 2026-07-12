@@ -90,11 +90,7 @@ export function SplashIntro({ onComplete }: { onComplete: () => void }) {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden"
-      style={{
-        background:
-          "radial-gradient(ellipse at 30% 50%, #1a0a0a 0%, #0a0a1a 40%, #050510 100%)",
-      }}
+      className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden splash-gradient"
     >
       {/* Ambient glows */}
       <div className="absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-red-900/20 blur-[100px]" />
@@ -103,10 +99,10 @@ export function SplashIntro({ onComplete }: { onComplete: () => void }) {
 
       {/* Subtle grid */}
       <div
-        className="absolute inset-0 opacity-[0.025]"
+        className="absolute inset-0 opacity-[0.05] dark:opacity-[0.025]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+            "linear-gradient(rgba(128,128,128,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(128,128,128,0.15) 1px, transparent 1px)",
           backgroundSize: "50px 50px",
         }}
       />
@@ -144,7 +140,7 @@ export function SplashIntro({ onComplete }: { onComplete: () => void }) {
 
         {/* Title */}
         <div ref={titleRef} className="opacity-0 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
             Master Farooq&apos;s{" "}
             <span className="bg-gradient-to-r from-red-500 via-red-400 to-amber-400 bg-clip-text text-transparent">
               Club

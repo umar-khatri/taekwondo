@@ -117,14 +117,8 @@ export function HeroSection() {
       ref={sectionRef}
       className="relative min-h-screen flex items-center overflow-hidden"
     >
-      {/* Fixed background — dark gradient with red/navy/gold tones */}
-      <div
-        className="fixed inset-0 -z-10"
-        style={{
-          background:
-            "radial-gradient(ellipse at 20% 30%, #2a0e0e 0%, #0c0c1e 35%, #060612 65%, #030308 100%)",
-        }}
-      />
+      {/* Fixed background */}
+      <div className="fixed inset-0 -z-10 hero-gradient" />
 
       {/* Animated ambient glow orbs */}
       <div className="fixed top-[15%] left-[10%] h-80 w-80 rounded-full bg-red-900/15 blur-[120px] animate-pulse -z-10" />
@@ -139,12 +133,8 @@ export function HeroSection() {
 
       {/* Subtle grid pattern */}
       <div
-        className="fixed inset-0 opacity-[0.02] -z-10"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
+        className="fixed inset-0 opacity-[0.05] dark:opacity-[0.02] -z-10 bg-[linear-gradient(rgba(0,0,0,0.1)_1px,_transparent_1px),_linear-gradient(90deg,_rgba(0,0,0,0.1)_1px,_transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.08)_1px,_transparent_1px),_linear-gradient(90deg,_rgba(255,255,255,0.08)_1px,_transparent_1px)]"
+        style={{ backgroundSize: "60px 60px" }}
       />
 
       {/* Floating particles */}
@@ -177,7 +167,7 @@ export function HeroSection() {
           {/* Badge */}
           <div
             ref={badgeRef}
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md px-4 py-1.5 text-xs font-medium text-white/70 shadow-lg opacity-0"
+            className="inline-flex items-center gap-2 rounded-full border border-border/50 bg-background/50 backdrop-blur-md px-4 py-1.5 text-xs font-medium text-foreground/70 shadow-lg opacity-0"
           >
             <Shield className="h-3.5 w-3.5 text-amber-500" />
             Taekwondo · Kickboxing · MMA
@@ -186,7 +176,7 @@ export function HeroSection() {
           {/* Title */}
           <h1
             ref={titleRef}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white opacity-0"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground opacity-0"
           >
             {ACADEMY_INFO.name}
           </h1>
@@ -194,7 +184,7 @@ export function HeroSection() {
           {/* Subtitle */}
           <p
             ref={subtitleRef}
-            className="text-lg sm:text-xl md:text-2xl font-medium text-white/60 max-w-2xl opacity-0"
+            className="text-lg sm:text-xl md:text-2xl font-medium text-muted-foreground max-w-2xl opacity-0"
           >
             {ACADEMY_INFO.tagline}
           </p>
@@ -202,7 +192,7 @@ export function HeroSection() {
           {/* Description */}
           <p
             ref={descRef}
-            className="text-sm sm:text-base text-white/40 max-w-xl opacity-0"
+            className="text-sm sm:text-base text-muted-foreground/80 max-w-xl opacity-0"
           >
             Train with the best. Build confidence, discipline, and strength
             through the art of martial arts.
@@ -223,7 +213,7 @@ export function HeroSection() {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-base px-8 cursor-pointer border-white/15 text-white hover:bg-white/10 backdrop-blur-sm transition-all duration-300 hover:border-white/25 hover:scale-[1.02] active:scale-[0.98]"
+                className="text-base px-8 cursor-pointer border-border/60 text-foreground hover:bg-accent backdrop-blur-sm transition-all duration-300 hover:border-border hover:scale-[1.02] active:scale-[0.98]"
               >
                 View Schedule
               </Button>
@@ -241,10 +231,10 @@ export function HeroSection() {
               { value: "5th", label: "Dan Black Belt" },
             ].map((stat) => (
               <div key={stat.label} className="text-center opacity-0">
-                <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-red-400 to-amber-400 bg-clip-text text-transparent">
+                <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-red-500 to-amber-500 bg-clip-text text-transparent">
                   {stat.value}
                 </div>
-                <div className="text-xs sm:text-sm text-white/35 mt-1">
+                <div className="text-xs sm:text-sm text-muted-foreground mt-1">
                   {stat.label}
                 </div>
               </div>

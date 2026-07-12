@@ -179,7 +179,7 @@ export function HeroSection() {
             ref={badgeRef}
             className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md px-4 py-1.5 text-xs font-medium text-white/70 shadow-lg opacity-0"
           >
-            <Shield className="h-3.5 w-3.5 text-red-400" />
+            <Shield className="h-3.5 w-3.5 text-amber-500" />
             Taekwondo · Kickboxing · MMA
           </div>
 
@@ -213,7 +213,7 @@ export function HeroSection() {
             <a href="#trial">
               <Button
                 size="lg"
-                className="gap-2 text-base px-8 cursor-pointer bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white border-0 shadow-lg shadow-red-900/30 transition-all duration-300 hover:shadow-red-700/40 hover:scale-[1.02] active:scale-[0.98]"
+                className="gap-2 text-base px-8 cursor-pointer bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-400 hover:to-amber-400 text-white border-0 shadow-lg shadow-amber-900/20 transition-all duration-300 hover:shadow-amber-700/30 hover:scale-[1.02] active:scale-[0.98]"
               >
                 Book a Free Trial
                 <ArrowRight className="h-4 w-4" />

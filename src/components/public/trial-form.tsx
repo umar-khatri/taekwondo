@@ -85,7 +85,7 @@ export function TrialForm() {
     <section id="trial" className="py-16 sm:py-24">
       <div className="mx-auto max-w-6xl px-4">
         <div ref={headingRef} className="text-center mb-12">
-          <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
+          <p className="text-sm font-semibold text-amber-500 uppercase tracking-wider mb-2">
             Get Started
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
@@ -139,7 +139,7 @@ export function TrialForm() {
 
               <Button
                 type="submit"
-                className="w-full gap-2 cursor-pointer"
+                className="w-full gap-2 cursor-pointer bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-400 hover:to-amber-400 text-white border-0 shadow-lg shadow-amber-900/20"
                 size="lg"
                 disabled={loading}
               >

@@ -23,7 +23,9 @@ export default function HomePage() {
         style={{
           opacity: showSplash ? 0 : 1,
           transition: "opacity 0.5s ease-in-out",
-        }}
+          "--primary": "25 95% 53%",
+          "--ring": "25 95% 53%",
+        } as React.CSSProperties}
       >
         <Navbar />
         <main className="flex-1">

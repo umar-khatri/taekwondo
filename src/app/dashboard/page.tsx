@@ -10,6 +10,8 @@ import {
   Plus,
   ArrowRight,
   TrendingUp,
+  Wallet,
+  BarChart3,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -58,8 +60,8 @@ export default function DashboardPage() {
       sub: `${stats.activeStudents} active`,
       icon: Users,
       href: "/dashboard/students",
-      color: "text-blue-600 dark:text-blue-400",
-      bg: "bg-blue-50 dark:bg-blue-900/20",
+      color: "text-red-600 dark:text-red-400",
+      bg: "bg-red-50 dark:bg-red-900/20",
     },
     {
       label: "Pending Trials",
@@ -68,7 +70,7 @@ export default function DashboardPage() {
       icon: Sparkles,
       href: "/dashboard/trials",
       color: "text-amber-600 dark:text-amber-400",
-      bg: "bg-amber-50 dark:bg-amber-900/20",
+      bg: "bg-amber-50 dark:bg-amber-900/15",
     },
     {
       label: "Announcements",
@@ -76,8 +78,8 @@ export default function DashboardPage() {
       sub: "published",
       icon: MessageSquare,
       href: "/dashboard/announcements",
-      color: "text-purple-600 dark:text-purple-400",
-      bg: "bg-purple-50 dark:bg-purple-900/20",
+      color: "text-orange-600 dark:text-orange-400",
+      bg: "bg-orange-50 dark:bg-orange-900/15",
     },
   ];
 
@@ -104,6 +106,18 @@ export default function DashboardPage() {
       label: "New Announcement",
       icon: MessageSquare,
       href: "/dashboard/announcements?action=add",
+      variant: "outline" as const,
+    },
+    {
+      label: "Manage Fees",
+      icon: Wallet,
+      href: "/dashboard/fees",
+      variant: "outline" as const,
+    },
+    {
+      label: "Reports",
+      icon: BarChart3,
+      href: "/dashboard/reports",
       variant: "outline" as const,
     },
   ];
@@ -152,7 +166,7 @@ export default function DashboardPage() {
       {/* Quick Actions */}
       <div>
         <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {quickActions.map((action) => (
             <Link key={action.label} href={action.href}>
               <Button

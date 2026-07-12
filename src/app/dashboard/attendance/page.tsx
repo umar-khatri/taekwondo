@@ -227,7 +227,7 @@ export default function AttendancePage() {
                 <CardContent className="pt-3 pb-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold bg-primary/10 text-primary">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold bg-gradient-to-br from-red-500/15 to-amber-500/15 text-red-600 dark:text-red-400 border border-red-500/10">
                         {student.name.charAt(0).toUpperCase()}
                       </div>
                       <div>

@@ -45,7 +45,7 @@ export function AboutSection() {
     <section id="about" className="py-16 sm:py-24 bg-muted/30">
       <div className="mx-auto max-w-6xl px-4">
         <div ref={headingRef} className="text-center mb-12">
-          <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
+          <p className="text-sm font-semibold bg-gradient-to-r from-red-500 to-amber-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">
             About Us
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
@@ -67,7 +67,7 @@ export function AboutSection() {
               className="card-hover border-border/50 bg-card/80 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1"
             >
               <CardContent className="pt-6 text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-110">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-red-500/15 to-amber-500/15 text-red-500 transition-transform duration-300 group-hover:scale-110 border border-red-500/10">
                   <item.icon className="h-6 w-6" />
                 </div>
                 <h3 className="font-semibold text-base mb-2">{item.title}</h3>

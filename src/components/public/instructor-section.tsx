@@ -18,7 +18,7 @@ export function InstructorSection() {
     <section id="instructor" className="py-16 sm:py-24 bg-muted/30">
       <div className="mx-auto max-w-6xl px-4">
         <div ref={headingRef} className="text-center mb-12">
-          <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
+          <p className="text-sm font-semibold bg-gradient-to-r from-red-500 to-amber-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">
             Meet Your Instructor
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
@@ -31,15 +31,15 @@ export function InstructorSection() {
             <CardContent className="pt-6">
               <div className="flex flex-col sm:flex-row items-center gap-6">
                 {/* Avatar placeholder */}
-                <div className="flex h-28 w-28 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/10">
-                  <Award className="h-12 w-12 text-primary" />
+                <div className="flex h-28 w-28 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-red-500/15 to-amber-500/15 border border-red-500/10">
+                  <Award className="h-12 w-12 text-red-500" />
                 </div>
 
                 <div className="text-center sm:text-left">
                   <h3 className="text-xl font-bold">
                     {ACADEMY_INFO.instructor.name}
                   </h3>
-                  <p className="text-sm font-medium text-primary mb-3">
+                  <p className="text-sm font-medium text-red-500 mb-3">
                     {ACADEMY_INFO.instructor.title}
                   </p>
                   <p className="text-sm text-muted-foreground leading-relaxed">

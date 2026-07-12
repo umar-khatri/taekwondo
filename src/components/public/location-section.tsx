@@ -24,7 +24,7 @@ export function LocationSection() {
     <section id="location" className="py-16 sm:py-24">
       <div className="mx-auto max-w-6xl px-4">
         <div ref={headingRef} className="text-center mb-12">
-          <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
+          <p className="text-sm font-semibold bg-gradient-to-r from-red-500 to-amber-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">
             Find Us
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
@@ -59,7 +59,7 @@ export function LocationSection() {
             >
               <CardContent className="pt-6">
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-red-500/15 to-amber-500/15 text-red-600 dark:text-red-400 border border-red-500/10">
                     <MapPin className="h-5 w-5" />
                   </div>
                   <div>
@@ -78,7 +78,7 @@ export function LocationSection() {
             >
               <CardContent className="pt-6">
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-red-500/15 to-amber-500/15 text-red-600 dark:text-red-400 border border-red-500/10">
                     <Phone className="h-5 w-5" />
                   </div>
                   <div>
@@ -97,7 +97,7 @@ export function LocationSection() {
             >
               <CardContent className="pt-6">
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-red-500/15 to-amber-500/15 text-red-600 dark:text-red-400 border border-red-500/10">
                     <Mail className="h-5 w-5" />
                   </div>
                   <div>

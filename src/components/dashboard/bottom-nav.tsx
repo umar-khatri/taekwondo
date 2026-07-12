@@ -46,8 +46,8 @@ export function BottomNav() {
                 className={cn(
                   "flex flex-col items-center gap-[3px] px-2 py-1.5 rounded-xl transition-all duration-200 min-w-[3.5rem] relative",
                   isActive
-                    ? "text-primary"
-                    : "text-muted-foreground active:scale-95"
+                    ? "bg-gradient-to-r from-red-500 to-amber-500 bg-clip-text text-transparent"
+                    : "text-muted-foreground group-hover:text-foreground"
                 )}
               >
                 {/* Active indicator dot */}
@@ -57,7 +57,7 @@ export function BottomNav() {
                 <item.icon
                   className={cn(
                     "h-[22px] w-[22px] transition-all duration-200",
-                    isActive && "text-primary"
+                    isActive ? "text-red-500" : "text-muted-foreground"
                   )}
                   strokeWidth={isActive ? 2.2 : 1.8}
                 />

@@ -35,7 +35,7 @@ export function AnnouncementsSection() {
     <section id="announcements" className="py-16 sm:py-24 bg-muted/30">
       <div className="mx-auto max-w-6xl px-4">
         <div ref={headingRef} className="text-center mb-12">
-          <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
+          <p className="text-sm font-semibold bg-gradient-to-r from-red-500 to-amber-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">
             Latest News
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">

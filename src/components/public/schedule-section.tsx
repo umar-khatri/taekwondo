@@ -19,7 +19,7 @@ export function ScheduleSection() {
     <section id="schedule" className="py-16 sm:py-24">
       <div className="mx-auto max-w-6xl px-4">
         <div ref={headingRef} className="text-center mb-12">
-          <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
+          <p className="text-sm font-semibold bg-gradient-to-r from-red-500 to-amber-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">
             Class Schedule
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
@@ -35,7 +35,7 @@ export function ScheduleSection() {
             {/* Header */}
             <div className="bg-primary/5 border-b border-border/50 px-6 py-4">
               <h3 className="font-semibold text-lg flex items-center gap-2">
-                <CalendarDays className="h-5 w-5 text-primary" />
+                <CalendarDays className="h-5 w-5 text-red-500" />
                 Regular Training
               </h3>
               <p className="text-sm text-muted-foreground mt-1">
@@ -49,7 +49,7 @@ export function ScheduleSection() {
                 {days.map((day) => (
                   <span
                     key={day}
-                    className="inline-flex items-center rounded-full bg-primary/10 text-primary px-4 py-1.5 text-sm font-medium transition-colors duration-300 hover:bg-primary/20"
+                    className="inline-flex items-center rounded-full bg-gradient-to-r from-red-500/15 to-amber-500/15 text-red-600 dark:text-red-400 border border-red-500/10 px-4 py-1.5 text-sm font-medium transition-colors duration-300 hover:from-red-500/20 hover:to-amber-500/20"
                   >
                     {day}
                   </span>
@@ -58,7 +58,7 @@ export function ScheduleSection() {
 
               {/* Time */}
               <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/50 border border-border/50">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shrink-0">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-red-500 to-amber-500 text-white shrink-0 shadow-sm shadow-amber-900/20">
                   <Clock className="h-5 w-5" />
                 </div>
                 <div>

@@ -117,49 +117,7 @@ export function HeroSection() {
       ref={sectionRef}
       className="relative min-h-screen flex items-center overflow-hidden"
     >
-      {/* Fixed background */}
-      <div className="fixed inset-0 -z-10 hero-gradient" />
-
-      {/* Animated ambient glow orbs */}
-      <div className="fixed top-[15%] left-[10%] h-80 w-80 rounded-full bg-red-900/15 blur-[120px] animate-pulse -z-10" />
-      <div
-        className="fixed top-[40%] right-[10%] h-64 w-64 rounded-full bg-blue-900/10 blur-[100px] animate-pulse -z-10"
-        style={{ animationDelay: "2s", animationDuration: "4s" }}
-      />
-      <div
-        className="fixed bottom-[20%] left-[30%] h-56 w-56 rounded-full bg-amber-800/8 blur-[90px] animate-pulse -z-10"
-        style={{ animationDelay: "3.5s", animationDuration: "5s" }}
-      />
-
-      {/* Subtle grid pattern */}
-      <div
-        className="fixed inset-0 opacity-[0.05] dark:opacity-[0.02] -z-10 bg-[linear-gradient(rgba(0,0,0,0.1)_1px,_transparent_1px),_linear-gradient(90deg,_rgba(0,0,0,0.1)_1px,_transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.08)_1px,_transparent_1px),_linear-gradient(90deg,_rgba(255,255,255,0.08)_1px,_transparent_1px)]"
-        style={{ backgroundSize: "60px 60px" }}
-      />
-
-      {/* Floating particles */}
-      <div ref={particlesRef} className="absolute inset-0 pointer-events-none">
-        {mounted && Array.from({ length: 16 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full opacity-0"
-            style={{
-              width: `${2 + Math.random() * 3}px`,
-              height: `${2 + Math.random() * 3}px`,
-              background:
-                i % 4 === 0
-                  ? "rgba(220,60,60,0.5)"
-                  : i % 4 === 1
-                  ? "rgba(60,80,180,0.4)"
-                  : i % 4 === 2
-                  ? "rgba(230,190,70,0.45)"
-                  : "rgba(255,255,255,0.25)",
-              left: `${8 + Math.random() * 84}%`,
-              top: `${8 + Math.random() * 84}%`,
-            }}
-          />
-        ))}
-      </div>
+      <div className="absolute inset-0 -z-10 pointer-events-none" />
 
       {/* Hero content */}
       <div className="relative z-10 mx-auto max-w-6xl px-4 py-28 sm:py-36 md:py-44 w-full">

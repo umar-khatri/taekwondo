@@ -11,6 +11,7 @@ import { AnnouncementsSection } from "@/components/public/announcements-section"
 import { TrialForm } from "@/components/public/trial-form";
 import { Footer } from "@/components/public/footer";
 import { SplashIntro } from "@/components/public/splash-intro";
+import { StarfieldBackground } from "@/components/public/starfield-background";
 
 export default function HomePage() {
   const [showSplash, setShowSplash] = useState(true);
@@ -19,19 +20,20 @@ export default function HomePage() {
     <>
       {showSplash && <SplashIntro onComplete={() => setShowSplash(false)} />}
       <div
-        className="flex min-h-screen flex-col"
+        className="flex min-h-screen flex-col relative"
         style={{
           opacity: showSplash ? 0 : 1,
           transition: "opacity 0.5s ease-in-out",
         }}
       >
+        <StarfieldBackground />
+        
         <Navbar />
-        <main className="flex-1">
-          {/* Hero sits over the fixed background */}
+        <main className="flex-1 relative z-10">
           <HeroSection />
 
-          {/* All remaining sections scroll over the fixed background with an opaque wrapper */}
-          <div className="relative z-10 bg-background">
+          {/* All remaining sections scroll over the fixed background */}
+          <div className="relative z-10">
             <AboutSection />
             <ScheduleSection />
             <InstructorSection />

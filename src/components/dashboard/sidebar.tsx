@@ -12,6 +12,7 @@ import {
   BarChart3,
   Shield,
   ArrowLeft,
+  Wallet,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -23,6 +24,7 @@ const sidebarItems = [
   { href: "/dashboard/attendance", icon: ClipboardCheck, label: "Attendance" },
   { href: "/dashboard/trials", icon: Sparkles, label: "Trials" },
   { href: "/dashboard/announcements", icon: MessageSquare, label: "Announcements" },
+  { href: "/dashboard/fees", icon: Wallet, label: "Fees" },
   { href: "/dashboard/reports", icon: BarChart3, label: "Reports" },
 ];
 

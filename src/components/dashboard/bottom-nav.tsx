@@ -8,6 +8,7 @@ import {
   ClipboardCheck,
   MessageSquare,
   Sparkles,
+  Wallet,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +17,7 @@ const navItems = [
   { href: "/dashboard/students", icon: Users, label: "Students" },
   { href: "/dashboard/attendance", icon: ClipboardCheck, label: "Attend" },
   { href: "/dashboard/trials", icon: Sparkles, label: "Trials" },
-  { href: "/dashboard/announcements", icon: MessageSquare, label: "News" },
+  { href: "/dashboard/fees", icon: Wallet, label: "Fees" },
 ];
 
 export function BottomNav() {

@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   Trash2,
   Clock,
+  XCircle,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -50,15 +51,17 @@ export default function TrialsPage() {
     loadTrials();
   }, [loadTrials]);
 
-  async function markContacted(id: string) {
-    const { error } = await supabase
-      .from("trial_requests")
-      .update({ status: "contacted" })
-      .eq("id", id);
-    if (error) {
-      toast.error("Failed to update.");
+  async function updateStatus(id: string, status: "approved" | "rejected") {
+    const res = await fetch(`/api/trials/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    
+    if (!res.ok) {
+      toast.error("Failed to update status.");
     } else {
-      toast.success("Marked as contacted.");
+      toast.success(`Trial request ${status}.`);
       loadTrials();
     }
   }
@@ -83,7 +86,7 @@ export default function TrialsPage() {
     }
   }
 
-  const newCount = trials.filter((t) => t.status === "new").length;
+  const newCount = trials.filter((t) => t.status === "pending").length;
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -129,13 +132,21 @@ export default function TrialsPage() {
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="font-semibold text-sm truncate">{trial.name}</p>
-                        <Badge
-                          variant={trial.status === "new" ? "default" : "secondary"}
-                          className="text-[10px] px-1.5 py-0 shrink-0"
+                          <Badge
+                          variant={trial.status === "pending" ? "default" : trial.status === "approved" ? "outline" : "secondary"}
+                          className={`text-[10px] px-1.5 py-0 shrink-0 ${trial.status === 'approved' ? 'text-green-500 border-green-500/20 bg-green-500/10' : trial.status === 'rejected' ? 'text-red-500 border-red-500/20 bg-red-500/10' : ''}`}
                         >
-                          {trial.status === "new" ? (
+                          {trial.status === "pending" ? (
                             <span className="flex items-center gap-1">
-                              <Clock className="h-2.5 w-2.5" /> New
+                              <Clock className="h-2.5 w-2.5" /> Pending
+                            </span>
+                          ) : trial.status === "approved" ? (
+                            <span className="flex items-center gap-1">
+                              <CheckCircle2 className="h-2.5 w-2.5" /> Approved
+                            </span>
+                          ) : trial.status === "rejected" ? (
+                            <span className="flex items-center gap-1">
+                              <XCircle className="h-2.5 w-2.5" /> Rejected
                             </span>
                           ) : (
                             <span className="flex items-center gap-1">
@@ -163,11 +174,17 @@ export default function TrialsPage() {
                       <MoreHorizontal className="h-4 w-4" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      {trial.status === "new" && (
-                        <DropdownMenuItem onClick={() => markContacted(trial.id)}>
-                          <CheckCircle2 className="h-4 w-4 mr-2" />
-                          Mark Contacted
-                        </DropdownMenuItem>
+                      {trial.status === "pending" && (
+                        <>
+                          <DropdownMenuItem onClick={() => updateStatus(trial.id, "approved")}>
+                            <CheckCircle2 className="h-4 w-4 mr-2 text-green-500" />
+                            Approve
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => updateStatus(trial.id, "rejected")}>
+                            <XCircle className="h-4 w-4 mr-2 text-red-500" />
+                            Reject
+                          </DropdownMenuItem>
+                        </>
                       )}
                       <DropdownMenuItem onClick={() => setConvertingTrial(trial)}>
                         <UserPlus className="h-4 w-4 mr-2" />

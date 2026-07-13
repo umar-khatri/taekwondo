@@ -1,85 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { Send, CheckCircle2 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { supabase } from "@/lib/supabase";
-import { toast } from "sonner";
 import { useScrollReveal } from "@/lib/animations";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export function TrialForm() {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [age, setAge] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const headingRef = useScrollReveal<HTMLDivElement>({ y: 30, duration: 0.7 });
-  const formRef = useScrollReveal<HTMLDivElement>({
+  const ctaRef = useScrollReveal<HTMLDivElement>({
     y: 40,
     scale: 0.97,
     duration: 0.7,
     delay: 0.15,
   });
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!name.trim() || !phone.trim()) {
-      toast.error("Please fill in your name and phone number.");
-      return;
-    }
-
-    setLoading(true);
-    const { error } = await supabase.from("trial_requests").insert({
-      name: name.trim(),
-      phone: phone.trim(),
-      age: age ? parseInt(age) : null,
-      status: "new",
-    });
-
-    if (error) {
-      toast.error("Something went wrong. Please try again.");
-      console.error(error);
-    } else {
-      setSubmitted(true);
-      toast.success("Trial request submitted successfully!");
-    }
-    setLoading(false);
-  }
-
-  if (submitted) {
-    return (
-      <section id="trial" className="py-16 sm:py-24 relative z-10">
-        <div className="mx-auto max-w-6xl px-4">
-          <Card className="max-w-md mx-auto border-border/50 bg-card/80">
-            <CardContent className="pt-8 pb-8 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
-                <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">You&apos;re All Set!</h3>
-              <p className="text-muted-foreground text-sm">
-                Thank you for your interest! Our instructor will contact you shortly to confirm your trial class.
-              </p>
-              <Button
-                variant="outline"
-                className="mt-6 cursor-pointer"
-                onClick={() => {
-                  setSubmitted(false);
-                  setName("");
-                  setPhone("");
-                  setAge("");
-                }}
-              >
-                Submit Another
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="trial" className="py-16 sm:py-24 relative z-10">
@@ -96,68 +30,20 @@ export function TrialForm() {
           </p>
         </div>
 
-        <div ref={formRef}>
-        <Card className="max-w-md mx-auto border-border/50 bg-card/80 card-hover transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
-          <CardContent className="pt-6">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="trial-name">Full Name *</Label>
-                <Input
-                  id="trial-name"
-                  placeholder="Your name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="trial-phone">Phone Number *</Label>
-                <Input
-                  id="trial-phone"
-                  placeholder="+971 50 123 4567"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="trial-age">
-                  Age <span className="text-muted-foreground">(optional)</span>
-                </Label>
-                <Input
-                  id="trial-age"
-                  type="number"
-                  placeholder="e.g. 12"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  min={3}
-                  max={99}
-                />
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full gap-2 cursor-pointer"
-                size="lg"
-                disabled={loading}
-              >
-                {loading ? (
-                  <span className="flex items-center gap-2">
-                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
-                    Submitting...
-                  </span>
-                ) : (
-                  <>
-                    <Send className="h-4 w-4" />
-                    Request Free Trial
-                  </>
-                )}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+        <div ref={ctaRef}>
+          <Card className="max-w-md mx-auto border-border/50 bg-card/80 card-hover transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
+            <CardContent className="pt-8 pb-8 text-center">
+              <p className="mb-6 text-muted-foreground">
+                Sign in with your Google account to book your free trial and track its status.
+              </p>
+              <Link href="/book-trial">
+                <Button size="lg" className="w-full gap-2">
+                  Continue with Google
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>

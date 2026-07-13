@@ -40,6 +40,7 @@ function AnnouncementsPageContent() {
   const [editingAnnouncement, setEditingAnnouncement] = useState<Announcement | null>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [eventDate, setEventDate] = useState("");
   const [saving, setSaving] = useState(false);
 
   const loadAnnouncements = useCallback(async () => {
@@ -66,18 +67,20 @@ function AnnouncementsPageContent() {
       setEditingAnnouncement(announcement);
       setTitle(announcement.title);
       setContent(announcement.content);
+      setEventDate(announcement.event_date || "");
     } else {
       setEditingAnnouncement(null);
       setTitle("");
       setContent("");
+      setEventDate("");
     }
     setShowForm(true);
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!title.trim() || !content.trim()) {
-      toast.error("Title and content are required.");
+    if (!title.trim() || !content.trim() || !eventDate) {
+      toast.error("Title, content, and event date are required.");
       return;
     }
 
@@ -89,6 +92,7 @@ function AnnouncementsPageContent() {
         .update({
           title: title.trim(),
           content: content.trim(),
+          event_date: eventDate,
           updated_at: new Date().toISOString(),
         })
         .eq("id", editingAnnouncement.id);
@@ -101,6 +105,7 @@ function AnnouncementsPageContent() {
       const { error } = await supabase.from("announcements").insert({
         title: title.trim(),
         content: content.trim(),
+        event_date: eventDate,
       });
       if (error) {
         toast.error("Failed to create.");
@@ -114,6 +119,7 @@ function AnnouncementsPageContent() {
     setEditingAnnouncement(null);
     setTitle("");
     setContent("");
+    setEventDate("");
     loadAnnouncements();
   }
 
@@ -177,9 +183,17 @@ function AnnouncementsPageContent() {
                     <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
                       {announcement.content}
                     </p>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <Calendar className="h-3 w-3" />
-                      {format(new Date(announcement.created_at), "MMM d, yyyy 'at' h:mm a")}
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground mt-2">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        Posted: {format(new Date(announcement.created_at), "MMM d, yyyy")}
+                      </div>
+                      {announcement.event_date && (
+                        <div className="flex items-center gap-1 text-primary">
+                          <Calendar className="h-3 w-3" />
+                          Event: {format(new Date(announcement.event_date), "MMM d, yyyy")}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -248,7 +262,17 @@ function AnnouncementsPageContent() {
                 required
               />
             </div>
-            <div className="flex gap-3">
+            <div className="space-y-2">
+              <Label htmlFor="ann-date">Event Date (Expires after this date) *</Label>
+              <Input
+                id="ann-date"
+                type="date"
+                value={eventDate}
+                onChange={(e) => setEventDate(e.target.value)}
+                required
+              />
+            </div>
+            <div className="flex gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"

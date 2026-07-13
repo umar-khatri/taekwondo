@@ -50,6 +50,7 @@ create table if not exists announcements (
   id uuid primary key default uuid_generate_v4(),
   title text not null,
   content text not null,
+  event_date date not null default current_date,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );

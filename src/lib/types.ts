@@ -31,14 +31,16 @@ export interface TrialRequest {
   name: string;
   phone: string;
   age: number | null;
-  status: "new" | "contacted";
+  status: "pending" | "approved" | "rejected";
   created_at: string;
+  user_id?: string;
 }
 
 export interface Announcement {
   id: string;
   title: string;
   content: string;
+  event_date: string;
   created_at: string;
   updated_at: string;
 }

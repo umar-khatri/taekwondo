@@ -20,9 +20,11 @@ export function AnnouncementsSection() {
 
   useEffect(() => {
     async function load() {
+      const today = new Date().toISOString().split('T')[0];
       const { data } = await supabase
         .from("announcements")
         .select("*")
+        .gte("event_date", today)
         .order("created_at", { ascending: false })
         .limit(3);
       if (data) setAnnouncements(data);
@@ -70,9 +72,16 @@ export function AnnouncementsSection() {
             {announcements.map((item) => (
               <Card key={item.id} data-announcement className="border-border/50 bg-card/80 card-hover transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
                 <CardContent className="pt-6">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-                    <Calendar className="h-3.5 w-3.5" />
-                    {format(new Date(item.created_at), "MMM d, yyyy")}
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground mb-3">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="h-3.5 w-3.5" />
+                      {format(new Date(item.created_at), "MMM d, yyyy")}
+                    </div>
+                    {item.event_date && (
+                      <div className="flex items-center gap-1 text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+                        Event: {format(new Date(item.event_date), "MMM d, yyyy")}
+                      </div>
+                    )}
                   </div>
                   <h3 className="font-semibold mb-2 line-clamp-1">{item.title}</h3>
                   <p className="text-sm text-muted-foreground line-clamp-3">{item.content}</p>

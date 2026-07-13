@@ -5,10 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Send, CheckCircle2, Clock, XCircle, LogOut } from "lucide-react"
-import { createClient } from "@/lib/supabase/client"
+import { Send, CheckCircle2, Clock, XCircle } from "lucide-react"
 import { toast } from "sonner"
-import { useRouter } from "next/navigation"
+import { SignOutButton } from "@clerk/nextjs"
+import { submitTrialRequest } from "./actions"
 
 interface BookTrialClientProps {
   user: {
@@ -25,13 +25,6 @@ export function BookTrialClient({ user, existingRequest }: BookTrialClientProps)
   const [age, setAge] = useState("")
   const [loading, setLoading] = useState(false)
   const [request, setRequest] = useState(existingRequest)
-  const router = useRouter()
-  const supabase = createClient()
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    router.push("/")
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -41,23 +34,16 @@ export function BookTrialClient({ user, existingRequest }: BookTrialClientProps)
     }
 
     setLoading(true)
-    const { data, error } = await supabase
-      .from("trial_requests")
-      .insert({
-        name: name.trim(),
-        phone: phone.trim(),
-        age: age ? parseInt(age) : null,
-        status: "pending",
-        user_id: user.id
-      })
-      .select()
-      .single()
+    const result = await submitTrialRequest({
+      name: name.trim(),
+      phone: phone.trim(),
+      age: age ? parseInt(age) : null,
+    })
 
-    if (error) {
-      toast.error("Something went wrong. Please try again.")
-      console.error(error)
-    } else {
-      setRequest(data)
+    if (result.error) {
+      toast.error(result.error)
+    } else if (result.data) {
+      setRequest(result.data)
       toast.success("Trial request submitted successfully!")
     }
     setLoading(false)
@@ -109,10 +95,11 @@ export function BookTrialClient({ user, existingRequest }: BookTrialClientProps)
             )}
           </div>
 
-          <Button variant="outline" className="w-full" onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Sign Out
-          </Button>
+          <SignOutButton>
+            <Button variant="outline" className="w-full cursor-pointer">
+              Sign Out
+            </Button>
+          </SignOutButton>
         </CardContent>
       </Card>
     )
@@ -126,9 +113,6 @@ export function BookTrialClient({ user, existingRequest }: BookTrialClientProps)
             <CardTitle className="text-2xl font-bold">Book a Free Trial</CardTitle>
             <CardDescription>Experience a class before committing. No obligations!</CardDescription>
           </div>
-          <Button variant="ghost" size="icon" onClick={handleLogout} title="Sign Out">
-            <LogOut className="h-5 w-5 text-muted-foreground" />
-          </Button>
         </div>
       </CardHeader>
       <CardContent>

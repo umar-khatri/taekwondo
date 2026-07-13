@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ACADEMY_INFO } from "@/lib/types";
 import gsap from "gsap";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const navLinks = [
   { href: "#about", label: "About" },
@@ -98,20 +99,39 @@ export function Navbar() {
         </nav>
 
         {/* Right side */}
-        <div className="flex items-center gap-2">
-          <Link href="/dashboard" className="hidden md:block">
-            <Button
-              size="sm"
-              variant="outline"
-              className={`cursor-pointer transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] ${
-                scrolled
-                  ? ""
-                  : "border-border/50 text-foreground hover:bg-accent/50"
-              }`}
-            >
-              Dashboard
-            </Button>
-          </Link>
+        <div className="flex items-center gap-3">
+          <SignedIn>
+            <Link href="/dashboard" className="hidden md:block">
+              <Button
+                size="sm"
+                variant="outline"
+                className={`cursor-pointer transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] ${
+                  scrolled
+                    ? ""
+                    : "border-border/50 text-foreground hover:bg-accent/50"
+                }`}
+              >
+                Dashboard
+              </Button>
+            </Link>
+            <UserButton />
+          </SignedIn>
+          <SignedOut>
+            <SignInButton mode="modal">
+              <Button
+                size="sm"
+                variant="outline"
+                className={`cursor-pointer transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] ${
+                  scrolled
+                    ? ""
+                    : "border-border/50 text-foreground hover:bg-accent/50"
+                }`}
+              >
+                Sign In
+              </Button>
+            </SignInButton>
+          </SignedOut>
+
           {/* Mobile menu toggle */}
           <Button
             variant="ghost"
@@ -150,15 +170,24 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
-            <Link
-              href="/dashboard"
-              className="block w-full mt-2"
-              onClick={() => setOpen(false)}
-            >
-              <Button size="sm" className="w-full cursor-pointer">
-                Dashboard
-              </Button>
-            </Link>
+            <SignedIn>
+              <Link
+                href="/dashboard"
+                className="block w-full mt-2"
+                onClick={() => setOpen(false)}
+              >
+                <Button size="sm" className="w-full cursor-pointer">
+                  Dashboard
+                </Button>
+              </Link>
+            </SignedIn>
+            <SignedOut>
+              <SignInButton mode="modal">
+                <Button size="sm" className="w-full mt-2 cursor-pointer">
+                  Sign In
+                </Button>
+              </SignInButton>
+            </SignedOut>
           </nav>
         </div>
       )}

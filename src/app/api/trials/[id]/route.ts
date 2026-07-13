@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { Resend } from "resend"
-import { updateSession } from "@/lib/supabase/middleware"
+import { clerkClient } from "@clerk/nextjs/server"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 // We need service role key to get user email
@@ -32,14 +32,14 @@ export async function PATCH(
 
     if (error) throw error
 
-    // If it has a user_id, fetch the user's email to send notification
+    // If it has a user_id (Clerk ID), fetch the user's email to send notification
     if (trial.user_id) {
-      const { data: userData, error: userError } = await supabaseAdmin.auth.admin.getUserById(
-        trial.user_id
-      )
+      try {
+        const user = await clerkClient.users.getUser(trial.user_id)
+        const userEmail = user.emailAddresses[0]?.emailAddress
 
-      if (userData?.user?.email && !userError) {
-        const subject = status === "approved" 
+        if (userEmail) {
+          const subject = status === "approved"  
           ? "Your Trial Class Request is Approved!" 
           : "Update on Your Trial Class Request"
         
@@ -47,18 +47,21 @@ export async function PATCH(
           ? `<p>Hi ${trial.name},</p><p>Great news! Your trial class request has been approved.</p><p>Please log in to your dashboard for further details on scheduling your class.</p><p>Best,<br/>Master Farooq's Club</p>`
           : `<p>Hi ${trial.name},</p><p>Thank you for your interest. Unfortunately, we cannot accommodate your trial request at this time.</p><p>Best,<br/>Master Farooq's Club</p>`
 
-        // Send Email via Resend
-        try {
-          await resend.emails.send({
-            from: "Taekwondo Academy <onboarding@resend.dev>", // Replace with your domain once verified on Resend
-            to: userData.user.email,
-            subject: subject,
-            html: content,
-          })
-        } catch (emailError) {
-          console.error("Failed to send email:", emailError)
-          // We don't throw here, as the status update was still successful
+          // Send Email via Resend
+          try {
+            await resend.emails.send({
+              from: "Taekwondo Academy <onboarding@resend.dev>", // Replace with your domain once verified on Resend
+              to: userEmail,
+              subject: subject,
+              html: content,
+            })
+          } catch (emailError) {
+            console.error("Failed to send email:", emailError)
+            // We don't throw here, as the status update was still successful
+          }
         }
+      } catch (clerkError) {
+        console.error("Failed to fetch user from Clerk:", clerkError)
       }
     }
 

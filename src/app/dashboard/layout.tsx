@@ -1,12 +1,31 @@
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { BottomNav } from "@/components/dashboard/bottom-nav";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { userId } = auth();
+
+  if (!userId) {
+    redirect("/");
+  }
+
+  const { data: roleData } = await supabaseAdmin
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", userId)
+    .single();
+
+  if (roleData?.role !== "admin") {
+    redirect("/book-trial");
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Sidebar />

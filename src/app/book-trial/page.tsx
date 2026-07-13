@@ -1,22 +1,19 @@
 import { redirect } from "next/navigation"
-import { createClient } from "@/lib/supabase/server"
+import { currentUser } from "@clerk/nextjs/server"
+import { supabaseAdmin } from "@/lib/supabase-admin"
 import { BookTrialClient } from "./client-page"
 import { Navbar } from "@/components/public/navbar"
 import { Footer } from "@/components/public/footer"
 
 export default async function BookTrialPage() {
-  const supabase = await createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const user = await currentUser()
 
   if (!user) {
-    redirect("/login")
+    redirect("/")
   }
 
   // Check if they already have a trial request
-  const { data: trialRequest } = await supabase
+  const { data: trialRequest } = await supabaseAdmin
     .from("trial_requests")
     .select("*")
     .eq("user_id", user.id)
@@ -30,8 +27,8 @@ export default async function BookTrialPage() {
           <BookTrialClient 
             user={{
               id: user.id,
-              name: user.user_metadata?.full_name || "",
-              email: user.email || "",
+              name: user.firstName ? `${user.firstName} ${user.lastName || ""}`.trim() : "",
+              email: user.emailAddresses[0]?.emailAddress || "",
             }} 
             existingRequest={trialRequest} 
           />

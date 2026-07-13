@@ -27,11 +27,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { supabase } from "@/lib/supabase";
 import { TrialRequest } from "@/lib/types";
 import { StudentForm } from "@/components/students/student-form";
 import { format } from "date-fns";
 import { toast } from "sonner";
+import { getTrials, deleteTrial as deleteTrialAction } from "./actions";
 
 export default function TrialsPage() {
   const [trials, setTrials] = useState<TrialRequest[]>([]);
@@ -39,11 +39,9 @@ export default function TrialsPage() {
   const [convertingTrial, setConvertingTrial] = useState<TrialRequest | null>(null);
 
   const loadTrials = useCallback(async () => {
-    const { data } = await supabase
-      .from("trial_requests")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (data) setTrials(data);
+    setLoading(true);
+    const data = await getTrials();
+    setTrials(data);
     setLoading(false);
   }, []);
 
@@ -68,8 +66,8 @@ export default function TrialsPage() {
 
   async function deleteTrial(id: string) {
     if (!confirm("Delete this trial request?")) return;
-    const { error } = await supabase.from("trial_requests").delete().eq("id", id);
-    if (error) {
+    const result = await deleteTrialAction(id);
+    if (result.error) {
       toast.error("Failed to delete.");
     } else {
       toast.success("Trial request deleted.");
@@ -80,7 +78,7 @@ export default function TrialsPage() {
   async function handleConvertSuccess() {
     if (convertingTrial) {
       // Delete the trial request after converting
-      await supabase.from("trial_requests").delete().eq("id", convertingTrial.id);
+      await deleteTrialAction(convertingTrial.id);
       setConvertingTrial(null);
       loadTrials();
     }

@@ -26,7 +26,7 @@ export function AnnouncementsSection() {
         .select("*")
         .gte("event_date", today)
         .order("created_at", { ascending: false })
-        .limit(3);
+        .limit(10);
       if (data) setAnnouncements(data);
       setLoading(false);
     }
@@ -49,9 +49,9 @@ export function AnnouncementsSection() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          <div className="flex justify-center gap-4 max-w-5xl mx-auto overflow-hidden px-4">
             {[1, 2, 3].map((i) => (
-              <Card key={i} className="border-border/50 animate-pulse">
+              <Card key={i} className="w-[85vw] sm:w-[300px] shrink-0 border-border/50 animate-pulse hidden sm:block first:block">
                 <CardContent className="pt-6">
                   <div className="h-4 bg-muted rounded w-3/4 mb-3" />
                   <div className="h-3 bg-muted rounded w-full mb-2" />
@@ -68,9 +68,15 @@ export function AnnouncementsSection() {
             </CardContent>
           </Card>
         ) : (
-          <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          <div 
+            ref={cardsRef} 
+            className={`flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 w-full max-w-5xl mx-auto px-4 sm:px-6 hide-scrollbar ${
+              announcements.length <= 3 ? "md:justify-center" : ""
+            }`}
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
             {announcements.map((item) => (
-              <Card key={item.id} data-announcement className="border-border/50 bg-card/80 card-hover transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
+              <Card key={item.id} data-announcement className="w-[85vw] sm:w-[300px] shrink-0 snap-center border-border/50 bg-card/80 card-hover transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
                 <CardContent className="pt-6">
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground mb-3">
                     <div className="flex items-center gap-1">

@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabase";
 import { Student, FeePayment } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, CheckCircle2, AlertCircle, Clock, Check } from "lucide-react";
+import { Download, CheckCircle2, AlertCircle, Clock, Check, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -19,6 +19,7 @@ export default function FeesPage() {
   const [payments, setPayments] = useState<FeePayment[]>([]);
   const [loading, setLoading] = useState(true);
   const [markingId, setMarkingId] = useState<string | null>(null);
+  const [undoingId, setUndoingId] = useState<string | null>(null);
 
   useEffect(() => {
     loadData(selectedMonth);
@@ -86,6 +87,30 @@ export default function FeesPage() {
       console.error(error);
     } finally {
       setMarkingId(null);
+    }
+  }
+
+  async function undoMarkPaid(studentId: string) {
+    if (!confirm("Are you sure you want to undo marking this fee as paid?")) return;
+    setUndoingId(studentId);
+    try {
+      const { error } = await supabase
+        .from("fee_payments")
+        .delete()
+        .eq("student_id", studentId)
+        .eq("month", selectedMonth);
+
+      if (error) {
+        throw error;
+      }
+
+      setPayments((prev) => prev.filter((p) => p.student_id !== studentId));
+      toast.success("Payment undone");
+    } catch (error: any) {
+      toast.error("Failed to undo payment");
+      console.error(error);
+    } finally {
+      setUndoingId(null);
     }
   }
 
@@ -213,9 +238,21 @@ export default function FeesPage() {
                     
                     <div className="flex items-center justify-between w-full sm:w-auto gap-4">
                       {status === "paid" ? (
-                        <div className="flex items-center gap-1.5 text-success bg-success/10 px-3 py-1 rounded-full text-xs font-medium">
-                          <CheckCircle2 className="h-3.5 w-3.5" />
-                          Paid on {date ? format(parseISO(date), "MMM d") : "Unknown"}
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1.5 text-success bg-success/10 px-3 py-1 rounded-full text-xs font-medium">
+                            <CheckCircle2 className="h-3.5 w-3.5" />
+                            Paid on {date ? format(parseISO(date), "MMM d") : "Unknown"}
+                          </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => undoMarkPaid(student.id)}
+                            disabled={undoingId === student.id}
+                            className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                            title="Undo payment"
+                          >
+                            <RotateCcw className={`h-4 w-4 ${undoingId === student.id ? 'animate-spin' : ''}`} />
+                          </Button>
                         </div>
                       ) : status === "unpaid" ? (
                         <div className="flex items-center gap-1.5 text-destructive bg-destructive/10 px-3 py-1 rounded-full text-xs font-medium">

@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Send, CheckCircle2, Clock, XCircle } from "lucide-react"
 import { toast } from "sonner"
 import { SignOutButton } from "@clerk/nextjs"
+import Link from "next/link"
 import { submitTrialRequest } from "./actions"
 
 interface BookTrialClientProps {
@@ -70,13 +71,19 @@ export function BookTrialClient({ user, existingRequest }: BookTrialClientProps)
           <CardTitle className="text-2xl font-bold">Request {statusInfo.label}</CardTitle>
         </CardHeader>
         <CardContent className="pt-4 pb-8 text-center space-y-6">
-          <p className="text-muted-foreground text-sm">
+          <div className="text-muted-foreground text-sm text-left space-y-4">
             {request.status === "approved" 
-              ? "Great news! Your trial class request has been approved. Check your email for further instructions."
+              ? (
+                <>
+                  <p>Great news! Your trial class request has been approved.</p>
+                  <p>Please check out our schedule on the website for visiting us. Make sure to be there <strong>10 mins earlier</strong>.</p>
+                  <p>Wear comfortable workout clothes and carry a water bottle and a small towel.</p>
+                </>
+              )
               : request.status === "rejected"
-              ? "We're sorry, but we cannot accommodate your trial request at this time."
-              : "Thank you for your interest! Your request is currently being reviewed by an instructor. We will notify you by email."}
-          </p>
+              ? <p>We're sorry, but we cannot accommodate your trial request at this time.</p>
+              : <p>Thank you for your interest! Your request is currently being reviewed by an instructor. We will notify you by email.</p>}
+          </div>
           
           <div className="bg-muted/30 p-4 rounded-lg text-left text-sm space-y-2">
             <div className="flex justify-between">
@@ -95,11 +102,26 @@ export function BookTrialClient({ user, existingRequest }: BookTrialClientProps)
             )}
           </div>
 
-          <SignOutButton>
-            <Button variant="outline" className="w-full cursor-pointer">
-              Sign Out
-            </Button>
-          </SignOutButton>
+          <div className="space-y-3 pt-4">
+            {request.status === "approved" ? (
+              <Link href="/#schedule" className="block w-full">
+                <Button className="w-full cursor-pointer">
+                  View Schedule
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/" className="block w-full">
+                <Button variant="secondary" className="w-full cursor-pointer">
+                  Back to Website
+                </Button>
+              </Link>
+            )}
+            <SignOutButton>
+              <Button variant="outline" className="w-full cursor-pointer">
+                Sign Out
+              </Button>
+            </SignOutButton>
+          </div>
         </CardContent>
       </Card>
     )
@@ -126,7 +148,10 @@ export function BookTrialClient({ user, existingRequest }: BookTrialClientProps)
               onChange={(e) => setName(e.target.value)}
               required
             />
-            <p className="text-xs text-muted-foreground">Pre-filled from your Google account</p>
+            <p className="text-xs text-muted-foreground">Pre-filled from your Google account.</p>
+            <p className="text-[11px] font-medium text-destructive mt-1">
+              Note: The full name entered must be correct. Any falsified information will lead to immediate rejection of your request.
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -157,7 +182,7 @@ export function BookTrialClient({ user, existingRequest }: BookTrialClientProps)
 
           <Button
             type="submit"
-            className="w-full gap-2 mt-4"
+            className="w-full gap-2 mt-4 cursor-pointer"
             size="lg"
             disabled={loading}
           >

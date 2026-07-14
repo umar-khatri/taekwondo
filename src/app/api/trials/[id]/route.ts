@@ -2,6 +2,8 @@ import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { Resend } from "resend"
 import { clerkClient } from "@clerk/nextjs/server"
+import { render } from "@react-email/render"
+import { TrialStatusEmail } from "@/emails/trial-status-email"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 // We need service role key to get user email
@@ -12,11 +14,11 @@ const supabaseAdmin = createClient(
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { status } = await request.json()
-    const { id } = params
+    const { id } = await params
 
     if (!["approved", "rejected"].includes(status)) {
       return NextResponse.json({ error: "Invalid status" }, { status: 400 })
@@ -35,25 +37,34 @@ export async function PATCH(
     // If it has a user_id (Clerk ID), fetch the user's email to send notification
     if (trial.user_id) {
       try {
-        const user = await clerkClient.users.getUser(trial.user_id)
+        const client = await clerkClient()
+        const user = await client.users.getUser(trial.user_id)
         const userEmail = user.emailAddresses[0]?.emailAddress
 
         if (userEmail) {
           const subject = status === "approved"  
-          ? "Your Trial Class Request is Approved!" 
-          : "Update on Your Trial Class Request"
-        
-        const content = status === "approved"
-          ? `<p>Hi ${trial.name},</p><p>Great news! Your trial class request has been approved.</p><p>Please log in to your dashboard for further details on scheduling your class.</p><p>Best,<br/>Master Farooq's Club</p>`
-          : `<p>Hi ${trial.name},</p><p>Thank you for your interest. Unfortunately, we cannot accommodate your trial request at this time.</p><p>Best,<br/>Master Farooq's Club</p>`
+            ? "Your Trial Class Request is Approved!" 
+            : "Update on Your Trial Class Request"
+          
+          // Get the base URL from the request origin to construct the absolute dashboard URL
+          const origin = new URL(request.url).origin
+          
+          // Generate the HTML from our React Email template
+          const htmlContent = await render(
+            TrialStatusEmail({
+              studentName: trial.name,
+              status: status as "approved" | "rejected",
+              dashboardUrl: `${origin}/dashboard`
+            })
+          )
 
           // Send Email via Resend
           try {
             await resend.emails.send({
-              from: "Taekwondo Academy <onboarding@resend.dev>", // Replace with your domain once verified on Resend
+              from: "Master Farooq's Club <onboarding@resend.dev>", // Replace with your domain once verified on Resend
               to: userEmail,
               subject: subject,
-              html: content,
+              html: htmlContent,
             })
           } catch (emailError) {
             console.error("Failed to send email:", emailError)

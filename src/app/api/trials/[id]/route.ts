@@ -5,11 +5,7 @@ import { clerkClient } from "@clerk/nextjs/server"
 import { render } from "@react-email/render"
 import { TrialStatusEmail } from "@/emails/trial-status-email"
 
-// We need service role key to get user email
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+
 
 export async function PATCH(
   request: Request,
@@ -24,6 +20,10 @@ export async function PATCH(
     }
 
     // Update trial request status
+    const supabaseAdmin = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
     const { data: trial, error } = await supabaseAdmin
       .from("trial_requests")
       .update({ status })

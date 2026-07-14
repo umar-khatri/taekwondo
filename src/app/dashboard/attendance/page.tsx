@@ -168,7 +168,7 @@ export default function AttendancePage() {
         <div className="flex items-center gap-3 text-sm text-muted-foreground">
           <Users className="h-4 w-4" />
           <span>
-            {presentCount}/{markedCount} present · {students.length} active students
+            {presentCount}/{students.length} present
           </span>
         </div>
         <div className="flex gap-2">

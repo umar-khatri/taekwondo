@@ -3,11 +3,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Menu, X, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ACADEMY_INFO } from "@/lib/types";
 import gsap from "gsap";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignInButton, UserButton, useAuth } from "@clerk/nextjs";
+import { checkIsAdmin } from "@/app/auth-callback/actions";
 
 const navLinks = [
   { href: "#about", label: "About" },
@@ -19,10 +21,22 @@ const navLinks = [
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
+  const isBookTrial = pathname === "/book-trial";
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const navItemsRef = useRef<HTMLElement>(null);
+  const { isSignedIn } = useAuth();
+
+  useEffect(() => {
+    if (isSignedIn) {
+      checkIsAdmin().then(setIsAdmin);
+    } else {
+      setIsAdmin(false);
+    }
+  }, [isSignedIn]);
 
   useEffect(() => {
     // Scroll listener for transparent → glass transition
@@ -82,42 +96,61 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav ref={navItemsRef} className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={`px-3 py-2 text-sm font-medium transition-all duration-300 rounded-md ${
-                scrolled
-                  ? "text-muted-foreground hover:text-foreground hover:bg-accent"
-                  : "text-foreground/70 hover:text-foreground hover:bg-accent/50"
-              }`}
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
+        {!isBookTrial && (
+          <nav ref={navItemsRef} className="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`px-3 py-2 text-sm font-medium transition-all duration-300 rounded-md ${
+                  scrolled
+                    ? "text-muted-foreground hover:text-foreground hover:bg-accent"
+                    : "text-foreground/70 hover:text-foreground hover:bg-accent/50"
+                }`}
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        )}
 
         {/* Right side */}
         <div className="flex items-center gap-3">
-          <SignedIn>
-            <Link href="/dashboard" className="hidden md:block">
-              <Button
-                size="sm"
-                variant="outline"
-                className={`cursor-pointer transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] ${
-                  scrolled
-                    ? ""
-                    : "border-border/50 text-foreground hover:bg-accent/50"
-                }`}
-              >
-                Dashboard
-              </Button>
-            </Link>
-            <UserButton />
-          </SignedIn>
-          <SignedOut>
-            <SignInButton mode="modal">
+          <a
+            href="https://www.instagram.com/mfcc_legends?igsh=MXZ3N2Zlcno0ZzgwOA=="
+            target="_blank"
+            rel="noreferrer"
+            className={`flex items-center justify-center h-9 w-9 rounded-md transition-colors ${
+              scrolled
+                ? "text-muted-foreground hover:text-foreground hover:bg-accent"
+                : "text-foreground/70 hover:text-foreground hover:bg-accent/50"
+            }`}
+            title="Follow us on Instagram"
+          >
+            <Instagram className="h-4 w-4" />
+          </a>
+
+          {isSignedIn ? (
+            <>
+              {isAdmin && (
+                <Link href="/dashboard" className="hidden md:block">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className={`cursor-pointer transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] ${
+                      scrolled
+                        ? ""
+                        : "border-border/50 text-foreground hover:bg-accent/50"
+                    }`}
+                  >
+                    Dashboard
+                  </Button>
+                </Link>
+              )}
+              <UserButton />
+            </>
+          ) : (
+            <SignInButton mode="modal" forceRedirectUrl="/auth-callback">
               <Button
                 size="sm"
                 variant="outline"
@@ -130,19 +163,21 @@ export function Navbar() {
                 Sign In
               </Button>
             </SignInButton>
-          </SignedOut>
+          )}
 
           {/* Mobile menu toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className={`md:hidden h-9 w-9 cursor-pointer ${
-              scrolled ? "" : "text-foreground hover:bg-accent/50"
-            }`}
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+          {!isBookTrial && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className={`md:hidden h-9 w-9 cursor-pointer ${
+                scrolled ? "" : "text-foreground hover:bg-accent/50"
+              }`}
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          )}
         </div>
       </div>
 
@@ -170,24 +205,25 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
-            <SignedIn>
-              <Link
-                href="/dashboard"
-                className="block w-full mt-2"
-                onClick={() => setOpen(false)}
-              >
-                <Button size="sm" className="w-full cursor-pointer">
-                  Dashboard
-                </Button>
-              </Link>
-            </SignedIn>
-            <SignedOut>
-              <SignInButton mode="modal">
+            {isSignedIn ? (
+              isAdmin && (
+                <Link
+                  href="/dashboard"
+                  className="block w-full mt-2"
+                  onClick={() => setOpen(false)}
+                >
+                  <Button size="sm" className="w-full cursor-pointer">
+                    Dashboard
+                  </Button>
+                </Link>
+              )
+            ) : (
+              <SignInButton mode="modal" forceRedirectUrl="/auth-callback">
                 <Button size="sm" className="w-full mt-2 cursor-pointer">
                   Sign In
                 </Button>
               </SignInButton>
-            </SignedOut>
+            )}
           </nav>
         </div>
       )}

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
+import { Instagram } from "lucide-react";
 import { ACADEMY_INFO } from "@/lib/types";
 
 export function Footer() {
@@ -17,6 +18,15 @@ export function Footer() {
 
           {/* Links */}
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
+            <a 
+              href="https://www.instagram.com/mfcc_legends?igsh=MXZ3N2Zlcno0ZzgwOA==" 
+              target="_blank" 
+              rel="noreferrer"
+              className="hover:text-foreground transition-colors"
+              title="Follow us on Instagram"
+            >
+              <Instagram className="h-5 w-5" />
+            </a>
             <a href="#about" className="hover:text-foreground transition-colors">
               About
             </a>

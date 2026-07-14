@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Student, AttendanceRecord } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
-import { format, startOfMonth, endOfMonth } from "date-fns";
-import { getMonthlyExpectedClasses } from "@/lib/utils";
+import { format } from "date-fns";
+import { calculateMWFClasses } from "@/lib/utils";
 
 interface StudentProfileProps {
   student: Student;
@@ -22,15 +22,10 @@ export function StudentProfile({ student, onEdit, onClose }: StudentProfileProps
 
   useEffect(() => {
     async function loadAttendance() {
-      const start = startOfMonth(new Date()).toISOString().split('T')[0];
-      const end = endOfMonth(new Date()).toISOString().split('T')[0];
-
       const { data } = await supabase
         .from("attendance")
         .select("*")
         .eq("student_id", student.id)
-        .gte("date", start)
-        .lte("date", end)
         .order("date", { ascending: false });
       if (data) setAttendance(data);
       setLoadingAttendance(false);
@@ -39,7 +34,7 @@ export function StudentProfile({ student, onEdit, onClose }: StudentProfileProps
   }, [student.id]);
 
   const presentCount = attendance.filter((a) => a.status === "present").length;
-  const expectedClasses = getMonthlyExpectedClasses();
+  const expectedClasses = calculateMWFClasses(student.date_joined, new Date());
   const attendanceRate = expectedClasses > 0 ? Math.round((presentCount / expectedClasses) * 100) : 0;
 
   return (
@@ -67,6 +62,10 @@ export function StudentProfile({ student, onEdit, onClose }: StudentProfileProps
           <Phone className="h-4 w-4 text-muted-foreground shrink-0" />
           <span>{student.phone}</span>
         </div>
+        <div className="flex items-center gap-3 text-sm">
+          <Calendar className="h-4 w-4 text-muted-foreground shrink-0" />
+          <span>Joined {format(new Date(student.date_joined), "MMMM d, yyyy")}</span>
+        </div>
         {student.emergency_contact && (
           <div className="flex items-center gap-3 text-sm">
             <AlertTriangle className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -88,7 +87,7 @@ export function StudentProfile({ student, onEdit, onClose }: StudentProfileProps
         <h4 className="font-semibold text-sm mb-3 flex items-center justify-between gap-2">
           <span className="flex items-center gap-2">
             <Activity className="h-4 w-4" />
-            Attendance ({format(new Date(), "MMMM yyyy")})
+            Overall Attendance History
           </span>
         </h4>
         {loadingAttendance ? (
@@ -106,7 +105,7 @@ export function StudentProfile({ student, onEdit, onClose }: StudentProfileProps
               <span className="text-sm font-semibold">{attendanceRate}%</span>
             </div>
             <p className="text-xs text-muted-foreground mb-3">
-              {presentCount} present out of {expectedClasses} expected classes this month
+              {presentCount} present out of {expectedClasses} total scheduled classes
             </p>
             {/* Recent records */}
             <div className="space-y-1 max-h-40 overflow-y-auto scrollbar-hide">

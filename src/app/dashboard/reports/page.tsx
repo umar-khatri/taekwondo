@@ -32,6 +32,7 @@ import { supabase } from "@/lib/supabase";
 import { Student, AttendanceRecord } from "@/lib/types";
 import { format, subDays } from "date-fns";
 import { toast } from "sonner";
+import { calculateMWFClasses } from "@/lib/utils";
 
 interface ReportRow {
   studentName: string;
@@ -78,15 +79,25 @@ export default function ReportsPage() {
     const rows: ReportRow[] = filteredStudents.map((student) => {
       const records = attendanceData.filter((a) => a.student_id === student.id);
       const present = records.filter((r) => r.status === "present").length;
-      const absent = records.filter((r) => r.status === "absent").length;
-      const total = present + absent;
+      
+      const reportStart = new Date(dateFrom);
+      const reportEnd = new Date(dateTo);
+      const joinDate = new Date(student.date_joined);
+      const today = new Date();
+
+      const effectiveStart = joinDate > reportStart ? joinDate : reportStart;
+      const effectiveEnd = reportEnd > today ? today : reportEnd;
+      
+      const totalScheduled = calculateMWFClasses(effectiveStart, effectiveEnd);
+      const absent = Math.max(0, totalScheduled - present);
+
       return {
         studentName: student.name,
         phone: student.phone,
-        totalClasses: total,
+        totalClasses: totalScheduled,
         present,
         absent,
-        attendanceRate: total > 0 ? Math.round((present / total) * 100) : 0,
+        attendanceRate: totalScheduled > 0 ? Math.round((present / totalScheduled) * 100) : 0,
       };
     });
 

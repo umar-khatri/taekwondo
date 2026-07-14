@@ -6,23 +6,33 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Calculates the number of Mondays, Wednesdays, and Fridays in a given month.
- * @param date The date object representing the current month. Defaults to today.
+ * Calculates the total number of Mondays, Wednesdays, and Fridays between two dates (inclusive).
+ * @param startDate The start date (e.g., student.date_joined).
+ * @param endDate The end date (e.g., today or report end date).
  */
-export function getMonthlyExpectedClasses(date = new Date()): number {
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+export function calculateMWFClasses(startDate: Date | string, endDate: Date | string): number {
+  let start = new Date(startDate);
+  let end = new Date(endDate);
   
+  // Normalize times to midnight to avoid timezone/time-of-day edge cases
+  start.setHours(0, 0, 0, 0);
+  end.setHours(0, 0, 0, 0);
+
+  if (start > end) return 0;
+
   let expectedClasses = 0;
   
-  for (let day = 1; day <= daysInMonth; day++) {
-    const d = new Date(year, month, day);
-    const dayOfWeek = d.getDay();
+  // Create a new date object for iteration to avoid mutating the original
+  let current = new Date(start);
+  
+  while (current <= end) {
+    const dayOfWeek = current.getDay();
     // 1 = Monday, 3 = Wednesday, 5 = Friday
     if (dayOfWeek === 1 || dayOfWeek === 3 || dayOfWeek === 5) {
       expectedClasses++;
     }
+    // Move to next day
+    current.setDate(current.getDate() + 1);
   }
   
   return expectedClasses;

@@ -3,7 +3,7 @@ import { BottomNav } from "@/components/dashboard/bottom-nav";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { supabaseAdmin } from "@/lib/supabase-admin";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export default async function DashboardLayout({
   children,
@@ -16,7 +16,7 @@ export default async function DashboardLayout({
     redirect("/");
   }
 
-  const { data: roleData } = await supabaseAdmin
+  const { data: roleData } = await getSupabaseAdmin()
     .from("user_roles")
     .select("role")
     .eq("user_id", userId)

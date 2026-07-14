@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { currentUser } from "@clerk/nextjs/server"
-import { supabaseAdmin } from "@/lib/supabase-admin"
+import { getSupabaseAdmin } from "@/lib/supabase-admin"
 import { BookTrialClient } from "./client-page"
 import { Navbar } from "@/components/public/navbar"
 import { Footer } from "@/components/public/footer"
@@ -13,7 +13,7 @@ export default async function BookTrialPage() {
   }
 
   // Check if they already have a trial request
-  const { data: trialRequest } = await supabaseAdmin
+  const { data: trialRequest } = await getSupabaseAdmin()
     .from("trial_requests")
     .select("*")
     .eq("user_id", user.id)

@@ -1,7 +1,7 @@
 "use server"
 
 import { auth } from "@clerk/nextjs/server"
-import { supabaseAdmin } from "@/lib/supabase-admin"
+import { getSupabaseAdmin } from "@/lib/supabase-admin"
 import { revalidatePath } from "next/cache"
 
 export async function submitTrialRequest(formData: { name: string; phone: string; age: number | null }) {
@@ -13,7 +13,7 @@ export async function submitTrialRequest(formData: { name: string; phone: string
 
   const { name, phone, age } = formData
 
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from("trial_requests")
     .insert({
       name,

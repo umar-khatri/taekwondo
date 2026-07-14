@@ -3,6 +3,14 @@
 import { useEffect, useState, useRef } from "react";
 import { Megaphone, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { supabase } from "@/lib/supabase";
 import { Announcement } from "@/lib/types";
 import { format } from "date-fns";
@@ -76,23 +84,51 @@ export function AnnouncementsSection() {
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {announcements.map((item) => (
-              <Card key={item.id} data-announcement className="w-[85vw] sm:w-[300px] shrink-0 snap-center border-border/50 bg-card/80 card-hover transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
-                <CardContent className="pt-6">
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground mb-3">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-3.5 w-3.5" />
-                      {format(new Date(item.created_at), "MMM d, yyyy")}
-                    </div>
-                    {item.event_date && (
-                      <div className="flex items-center gap-1 text-primary bg-primary/10 px-1.5 py-0.5 rounded">
-                        Event: {format(new Date(item.event_date), "MMM d, yyyy")}
+              <Dialog key={item.id}>
+                <Card data-announcement className="w-[85vw] sm:w-[300px] shrink-0 snap-center border-border/50 bg-card/80 card-hover transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
+                  <CardContent className="pt-6 flex flex-col h-full">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground mb-3">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3.5 w-3.5" />
+                        {format(new Date(item.created_at), "MMM d, yyyy")}
                       </div>
-                    )}
+                      {item.event_date && (
+                        <div className="flex items-center gap-1 text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+                          Event: {format(new Date(item.event_date), "MMM d, yyyy")}
+                        </div>
+                      )}
+                    </div>
+                    <h3 className="font-semibold mb-2 line-clamp-1">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground line-clamp-3 mb-3">{item.content}</p>
+                    
+                    <div className="mt-auto pt-2">
+                      <DialogTrigger className="text-xs text-primary hover:underline font-medium cursor-pointer text-left w-max">
+                        Read more
+                      </DialogTrigger>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <DialogContent className="sm:max-w-lg">
+                  <DialogHeader>
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground mb-3">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3.5 w-3.5" />
+                        {format(new Date(item.created_at), "MMM d, yyyy")}
+                      </div>
+                      {item.event_date && (
+                        <div className="flex items-center gap-1 text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+                          Event: {format(new Date(item.event_date), "MMM d, yyyy")}
+                        </div>
+                      )}
+                    </div>
+                    <DialogTitle className="text-xl">{item.title}</DialogTitle>
+                  </DialogHeader>
+                  <div className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed mt-2 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                    {item.content}
                   </div>
-                  <h3 className="font-semibold mb-2 line-clamp-1">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground line-clamp-3">{item.content}</p>
-                </CardContent>
-              </Card>
+                </DialogContent>
+              </Dialog>
             ))}
           </div>
         )}

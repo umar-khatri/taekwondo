@@ -199,6 +199,6 @@
 .cl-footer > div:not(.cl-footerAction) {
   display: none !important;
 }
-.cl-internal-b3al4t, .cl-internal-txq3f7, .cl-internal-180wb59, .cl-devMode {
+.cl-internal-b3al4t, .cl-internal-txq3f7, .cl-internal-180wb59, .cl-devMode, .cl-userButtonPopoverFooter {
   display: none !important;
 }

@@ -37,11 +37,13 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider
-      appearance={{
-        layout: {
-          unsafe_disableDevelopmentModeWarnings: true,
-        },
-      }}
+      appearance={
+        {
+          layout: {
+            unsafe_disableDevelopmentModeWarnings: true,
+          },
+        } as any
+      }
     >
       <html
         lang="en"

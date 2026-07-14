@@ -20,11 +20,7 @@ export function HeroSection() {
   const ctaRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia(

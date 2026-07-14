@@ -6,7 +6,6 @@ import {
   LayoutDashboard,
   Users,
   ClipboardCheck,
-  MessageSquare,
   Sparkles,
   Wallet,
 } from "lucide-react";

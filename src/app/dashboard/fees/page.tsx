@@ -46,7 +46,7 @@ export default function FeesPage() {
 
       if (paymentsError) throw paymentsError;
       setPayments(paymentsData || []);
-    } catch (error: any) {
+    } catch (error) {
       toast.error("Failed to load fees data");
       console.error(error);
     } finally {
@@ -82,7 +82,7 @@ export default function FeesPage() {
         setPayments((prev) => [...prev, data]);
         toast.success("Marked as paid");
       }
-    } catch (error: any) {
+    } catch (error) {
       toast.error("Failed to mark as paid");
       console.error(error);
     } finally {
@@ -106,7 +106,7 @@ export default function FeesPage() {
 
       setPayments((prev) => prev.filter((p) => p.student_id !== studentId));
       toast.success("Payment undone");
-    } catch (error: any) {
+    } catch (error) {
       toast.error("Failed to undo payment");
       console.error(error);
     } finally {

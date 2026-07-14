@@ -17,7 +17,7 @@ interface BookTrialClientProps {
     name: string
     email: string
   }
-  existingRequest: any
+  existingRequest: Record<string, unknown> | null
 }
 
 export function BookTrialClient({ user, existingRequest }: BookTrialClientProps) {
@@ -81,23 +81,23 @@ export function BookTrialClient({ user, existingRequest }: BookTrialClientProps)
                 </>
               )
               : request.status === "rejected"
-              ? <p>We're sorry, but we cannot accommodate your trial request at this time.</p>
+              ? <p>We&apos;re sorry, but we cannot accommodate your trial request at this time.</p>
               : <p>Thank you for your interest! Your request is currently being reviewed by an instructor. We will notify you by email.</p>}
           </div>
           
           <div className="bg-muted/30 p-4 rounded-lg text-left text-sm space-y-2">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Name:</span>
-              <span className="font-medium">{request.name}</span>
+              <span className="font-medium">{request.name as string}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Phone:</span>
-              <span className="font-medium">{request.phone}</span>
+              <span className="font-medium">{request.phone as string}</span>
             </div>
-            {request.age && (
+            {(request.age as number | undefined) && (
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Age:</span>
-                <span className="font-medium">{request.age}</span>
+                <span className="font-medium">{request.age as number}</span>
               </div>
             )}
           </div>

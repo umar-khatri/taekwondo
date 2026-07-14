@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Shield } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
 import { ACADEMY_INFO } from "@/lib/types";
 

@@ -10,7 +10,6 @@ import {
   MessageSquare,
   Sparkles,
   BarChart3,
-  Shield,
   ArrowLeft,
   Wallet,
 } from "lucide-react";

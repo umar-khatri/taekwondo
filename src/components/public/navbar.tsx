@@ -34,6 +34,7 @@ export function Navbar() {
     if (isSignedIn) {
       checkIsAdmin().then(setIsAdmin);
     } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsAdmin(false);
     }
   }, [isSignedIn]);

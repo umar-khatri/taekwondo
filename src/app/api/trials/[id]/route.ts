@@ -77,8 +77,8 @@ export async function PATCH(
     }
 
     return NextResponse.json({ success: true, trial })
-  } catch (error: any) {
-    console.error("Trial update error:", error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+  } catch (error) {
+    console.error("Error updating trial request:", error)
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 })
   }
 }

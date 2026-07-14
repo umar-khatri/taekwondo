@@ -11,8 +11,8 @@ export function cn(...inputs: ClassValue[]) {
  * @param endDate The end date (e.g., today or report end date).
  */
 export function calculateMWFClasses(startDate: Date | string, endDate: Date | string): number {
-  let start = new Date(startDate);
-  let end = new Date(endDate);
+  const start = new Date(startDate);
+  const end = new Date(endDate);
   
   // Normalize times to midnight to avoid timezone/time-of-day edge cases
   start.setHours(0, 0, 0, 0);
@@ -23,7 +23,7 @@ export function calculateMWFClasses(startDate: Date | string, endDate: Date | st
   let expectedClasses = 0;
   
   // Create a new date object for iteration to avoid mutating the original
-  let current = new Date(start);
+  const current = new Date(start);
   
   while (current <= end) {
     const dayOfWeek = current.getDay();

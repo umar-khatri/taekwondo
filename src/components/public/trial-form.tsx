@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import { SignInButton, useAuth } from "@clerk/nextjs";
 
 export function TrialForm() {
+  const { isSignedIn } = useAuth();
   const headingRef = useScrollReveal<HTMLDivElement>({ y: 30, duration: 0.7 });
   const ctaRef = useScrollReveal<HTMLDivElement>({
     y: 40,
@@ -37,22 +38,21 @@ export function TrialForm() {
               <p className="mb-6 text-muted-foreground">
                 Sign in with your Google account to book your free trial and track its status.
               </p>
-              <SignedOut>
-                <SignInButton mode="modal" forceRedirectUrl="/book-trial">
-                  <Button size="lg" className="w-full gap-2 cursor-pointer">
-                    Continue with Google
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </SignInButton>
-              </SignedOut>
-              <SignedIn>
+              {isSignedIn ? (
                 <Link href="/book-trial">
                   <Button size="lg" className="w-full gap-2 cursor-pointer">
                     Go to Booking Portal
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
-              </SignedIn>
+              ) : (
+                <SignInButton mode="modal" forceRedirectUrl="/auth-callback">
+                  <Button size="lg" className="w-full gap-2 cursor-pointer">
+                    Continue with Google
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </SignInButton>
+              )}
             </CardContent>
           </Card>
         </div>

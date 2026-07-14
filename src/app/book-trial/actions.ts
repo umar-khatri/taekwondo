@@ -5,7 +5,7 @@ import { supabaseAdmin } from "@/lib/supabase-admin"
 import { revalidatePath } from "next/cache"
 
 export async function submitTrialRequest(formData: { name: string; phone: string; age: number | null }) {
-  const { userId } = auth()
+  const { userId } = await auth()
   
   if (!userId) {
     return { error: "Unauthorized" }

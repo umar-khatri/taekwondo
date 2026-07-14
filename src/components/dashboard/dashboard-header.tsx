@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Shield } from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { UserButton } from "@clerk/nextjs";
 import { ACADEMY_INFO } from "@/lib/types";
 
 export function DashboardHeader() {
@@ -16,7 +16,7 @@ export function DashboardHeader() {
           </div>
           {ACADEMY_INFO.name}
         </Link>
-        <ThemeToggle />
+        <UserButton />
       </div>
     </header>
   );

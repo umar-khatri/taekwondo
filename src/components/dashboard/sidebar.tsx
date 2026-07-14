@@ -15,7 +15,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { UserButton } from "@clerk/nextjs";
 import { ACADEMY_INFO } from "@/lib/types";
 
 const sidebarItems = [
@@ -76,9 +76,9 @@ export function Sidebar() {
           <ArrowLeft className="h-4 w-4" />
           Back to Website
         </Link>
-        <div className="flex items-center justify-between px-3 py-1">
-          <span className="text-xs text-muted-foreground">Theme</span>
-          <ThemeToggle />
+        <div className="flex items-center justify-between px-3 py-2 mt-2">
+          <span className="text-xs font-medium text-muted-foreground">Account</span>
+          <UserButton />
         </div>
       </div>
     </aside>

@@ -5,7 +5,6 @@ import { clerkClient } from "@clerk/nextjs/server"
 import { render } from "@react-email/render"
 import { TrialStatusEmail } from "@/emails/trial-status-email"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 // We need service role key to get user email
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -60,6 +59,7 @@ export async function PATCH(
 
           // Send Email via Resend
           try {
+            const resend = new Resend(process.env.RESEND_API_KEY);
             await resend.emails.send({
               from: "Master Farooq's Club <onboarding@resend.dev>", // Replace with your domain once verified on Resend
               to: userEmail,
